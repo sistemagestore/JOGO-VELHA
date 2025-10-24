@@ -1,0 +1,3527 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Dashboard de Jogos - Completo</title>
+    <style>
+        /* ===== RESET E ESTILOS GLOBAIS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .dashboard-header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-header p {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* ===== NAVEGAÇÃO ===== */
+        .game-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        /* ===== CONTEÚDO PRINCIPAL ===== */
+        .main-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+        }
+
+        .game-section {
+            display: none;
+        }
+
+        .game-section.active {
+            display: block;
+        }
+
+        /* ===== DASHBOARD PRINCIPAL ===== */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .welcome-section p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .game-card {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border-color: #4ecdc4;
+        }
+
+        .game-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .game-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .game-card p {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .game-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feature {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .play-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        /* ===== ESTATÍSTICAS ===== */
+        .stats-section {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-section h3 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            border-radius: 50%;
+            color: white;
+        }
+
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .stat-label {
+            font-weight: bold;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        /* ===== HEADER DOS JOGOS ===== */
+        .game-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .back-btn {
+            background: linear-gradient(45deg, #6c757d, #495057);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.6);
+        }
+
+        .game-header h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin: 0;
+        }
+
+        /* ===== JOGO DA VELHA ===== */
+        .velha-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        #status {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .scoreboard {
+            display: flex;
+            gap: 20px;
+        }
+
+        .score {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 15px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .score .player {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .score span:last-child {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .player-settings {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .player-settings h3 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .game-mode-info {
+            text-align: center;
+        }
+
+        .game-mode-info p {
+            color: #666;
+            font-style: italic;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary, .btn-danger {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.6);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            color: white;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.6);
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .game-board-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #tabuleiro {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 8px;
+            background: #333;
+            padding: 8px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .celula {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: none;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .celula::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .celula:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .celula:hover::before {
+            left: 100%;
+        }
+
+        .celula.X {
+            color: #ff6b6b;
+            animation: popIn 0.3s ease;
+        }
+
+        .celula.O {
+            color: #4ecdc4;
+            animation: popIn 0.3s ease;
+        }
+
+        .celula.winning {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            animation: winPulse 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes winPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+            100% { box-shadow: 0 0 0 20px rgba(255, 215, 0, 0); }
+        }
+
+        .game-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .game-history {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-history h3 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        #historico {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .historia-item {
+            padding: 8px 12px;
+            margin: 5px 0;
+            background: linear-gradient(45deg, #ffffff, #f8f9fa);
+            border-radius: 8px;
+            border-left: 4px solid #4ecdc4;
+            font-size: 0.9rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ===== DAMAS ===== */
+        .damas-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .damas-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        #damas-status {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .damas-scoreboard {
+            display: flex;
+            gap: 20px;
+        }
+
+        .damas-score {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 15px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .damas-score .player {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .damas-score span:last-child {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .damas-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .damas-board-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        #damas-tabuleiro {
+            display: grid;
+            grid-template-columns: repeat(8, 60px);
+            grid-template-rows: repeat(8, 60px);
+            gap: 2px;
+            background: #333;
+            padding: 8px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .casa-damas {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border-radius: 5px;
+        }
+
+        .casa-branca {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        }
+
+        .casa-preta {
+            background: linear-gradient(145deg, #8b4513, #654321);
+        }
+
+        .casa-damas:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .casa-damas.movimento-possivel {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d) !important;
+            animation: pulse 1s infinite alternate;
+            cursor: pointer;
+        }
+
+        .casa-damas.movimento-possivel::after {
+            content: '●';
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .casa-damas.peca-selecionada {
+            background: linear-gradient(45deg, #ffd700, #ffed4e) !important;
+            animation: winPulse 1s ease-in-out infinite alternate;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        }
+
+        .peca-damas {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .peca-damas::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .peca-damas:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .peca-damas:hover::before {
+            left: 100%;
+        }
+
+        .peca-damas.preto {
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            color: white;
+            border: 3px solid #1a252f;
+        }
+
+        .peca-damas.branco {
+            background: linear-gradient(145deg, #ecf0f1, #bdc3c7);
+            color: #2c3e50;
+            border: 3px solid #95a5a6;
+        }
+
+        .peca-damas.dama {
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            animation: damaGlow 2s ease-in-out infinite alternate;
+        }
+
+        .peca-damas.dama.preto {
+            background: linear-gradient(145deg, #8e44ad, #9b59b6);
+            color: #ffd700;
+        }
+
+        .peca-damas.dama.branco {
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        @keyframes damaGlow {
+            0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+            100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
+        }
+
+        .damas-history {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .damas-history h3 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        #damas-historico {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== CAMPO MINADO ===== */
+        .minado-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .minado-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .minado-scoreboard {
+            display: flex;
+            gap: 20px;
+        }
+
+        .minado-score {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 15px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .minado-score .player {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .minado-score span:last-child {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #minado-status {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .minado-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .minado-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            min-width: 80px;
+        }
+
+        .minado-stat span:first-child {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .minado-stat span:last-child {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .minado-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .minado-board-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        #minado-tabuleiro {
+            display: grid;
+            gap: 2px;
+            background: #333;
+            padding: 8px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .casa-minado {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 2px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            font-size: 0.9rem;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .casa-minado::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.3s;
+        }
+
+        .casa-minado:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .casa-minado:hover::before {
+            left: 100%;
+        }
+
+        .casa-minado:active {
+            transform: scale(0.95);
+        }
+
+        .casa-minado.revelada {
+            background: linear-gradient(145deg, #e9ecef, #dee2e6);
+            border-color: #adb5bd;
+            cursor: default;
+        }
+
+        .casa-minado.revelada:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .casa-minado.numero-1 { color: #0066cc; }
+        .casa-minado.numero-2 { color: #009900; }
+        .casa-minado.numero-3 { color: #cc0000; }
+        .casa-minado.numero-4 { color: #660099; }
+        .casa-minado.numero-5 { color: #cc6600; }
+        .casa-minado.numero-6 { color: #0099cc; }
+        .casa-minado.numero-7 { color: #000000; }
+        .casa-minado.numero-8 { color: #666666; }
+
+        .casa-minado.mina {
+            background: linear-gradient(145deg, #ff6b6b, #ee5a24);
+            color: white;
+            animation: explode 0.5s ease-in-out;
+        }
+
+        .casa-minado.bandeira {
+            background: linear-gradient(145deg, #ffd700, #ffed4e);
+            color: #cc6600;
+            animation: flagWave 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes flagWave {
+            0% { transform: rotate(-2deg); }
+            100% { transform: rotate(2deg); }
+        }
+
+        .minado-history {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .minado-history h3 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        #minado-historico {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== BATALHA NAVAL ===== */
+        .batalha-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .batalha-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        #batalha-status {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .batalha-scoreboard {
+            display: flex;
+            gap: 20px;
+        }
+
+        .batalha-score {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 15px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .batalha-score .player {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .batalha-score span:last-child {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .batalha-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .batalha-boards {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .batalha-board-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .batalha-board-container h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        #batalha-tabuleiro-jogador, #batalha-tabuleiro-ia {
+            display: grid;
+            grid-template-columns: repeat(10, 35px);
+            grid-template-rows: repeat(10, 35px);
+            gap: 1px;
+            background: #333;
+            padding: 5px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .casa-batalha {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            font-size: 0.8rem;
+            user-select: none;
+            position: relative;
+        }
+
+        .casa-batalha:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .casa-batalha.agua {
+            background: linear-gradient(145deg, #4ecdc4, #44a08d);
+            color: white;
+        }
+
+        .casa-batalha.navio {
+            background: linear-gradient(145deg, #8b4513, #654321);
+            color: white;
+        }
+
+        .casa-batalha.acerto {
+            background: linear-gradient(145deg, #ff6b6b, #ee5a24);
+            color: white;
+            animation: explode 0.5s ease-in-out;
+        }
+
+        .casa-batalha.erro {
+            background: linear-gradient(145deg, #6c757d, #495057);
+            color: white;
+        }
+
+        .batalha-history {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .batalha-history h3 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        #batalha-historico {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== DOMINÓ ===== */
+        .domino-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .domino-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        #domino-status {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .domino-scoreboard {
+            display: flex;
+            gap: 20px;
+        }
+
+        .domino-score {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 15px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .domino-score .player {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .domino-score span:last-child {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .domino-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .domino-game-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .domino-board {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            min-height: 100px;
+            padding: 20px;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .domino-piece {
+            width: 60px;
+            height: 30px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 2px solid #333;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .domino-piece:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .domino-piece.selected {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            border-color: #ff6b6b;
+            animation: winPulse 1s ease-in-out infinite alternate;
+        }
+
+        .domino-piece .left, .domino-piece .right {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+        }
+
+        .domino-piece .left {
+            border-right: 1px solid #333;
+        }
+
+        .domino-hand {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .domino-history {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .domino-history h3 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        #domino-historico {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== FOOTER ===== */
+        .dashboard-footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .dashboard-footer p {
+            color: #666;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 10px;
+            }
+            
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+            
+            .dashboard-header p {
+                font-size: 1rem;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .game-card {
+                padding: 20px;
+            }
+            
+            .game-icon {
+                font-size: 3rem;
+            }
+            
+            .game-card h3 {
+                font-size: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .game-header h2 {
+                font-size: 2rem;
+            }
+            
+            #damas-tabuleiro {
+                grid-template-columns: repeat(8, 45px);
+                grid-template-rows: repeat(8, 45px);
+            }
+            
+            .casa-damas {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .peca-damas {
+                width: 35px;
+                height: 35px;
+                font-size: 1.5rem;
+            }
+            
+            .casa-minado {
+                width: 25px;
+                height: 25px;
+                font-size: 0.8rem;
+            }
+
+            #batalha-tabuleiro-jogador, #batalha-tabuleiro-ia {
+                grid-template-columns: repeat(10, 25px);
+                grid-template-rows: repeat(10, 25px);
+            }
+
+            .casa-batalha {
+                width: 25px;
+                height: 25px;
+                font-size: 0.7rem;
+            }
+
+            .domino-piece {
+                width: 50px;
+                height: 25px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-header {
+                padding: 20px;
+            }
+            
+            .dashboard-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .game-card {
+                padding: 15px;
+            }
+            
+            .game-icon {
+                font-size: 2.5rem;
+            }
+            
+            .game-card h3 {
+                font-size: 1.3rem;
+            }
+            
+            .play-btn {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+            
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .game-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .game-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            #damas-tabuleiro {
+                grid-template-columns: repeat(8, 35px);
+                grid-template-rows: repeat(8, 35px);
+            }
+            
+            .casa-damas {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .peca-damas {
+                width: 28px;
+                height: 28px;
+                font-size: 1.2rem;
+            }
+            
+            .casa-minado {
+                width: 20px;
+                height: 20px;
+                font-size: 0.7rem;
+            }
+
+            #batalha-tabuleiro-jogador, #batalha-tabuleiro-ia {
+                grid-template-columns: repeat(10, 20px);
+                grid-template-rows: repeat(10, 20px);
+            }
+
+            .casa-batalha {
+                width: 20px;
+                height: 20px;
+                font-size: 0.6rem;
+            }
+
+            .domino-piece {
+                width: 40px;
+                height: 20px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <h1>🎮 Dashboard de Jogos</h1>
+            <p>Escolha seu jogo favorito e divirta-se!</p>
+        </header>
+
+        <!-- Navegação -->
+        <nav class="game-navigation">
+            <button class="nav-btn active" data-game="dashboard">🏠 Dashboard</button>
+            <button class="nav-btn" data-game="velha">⭕ Jogo da Velha</button>
+            <button class="nav-btn" data-game="damas">♟️ Damas</button>
+            <button class="nav-btn" data-game="minado">💣 Campo Minado</button>
+            <button class="nav-btn" data-game="batalha">🚢 Batalha Naval</button>
+            <button class="nav-btn" data-game="domino">🎲 Dominó</button>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <!-- Dashboard Principal -->
+            <div id="dashboard" class="game-section active">
+                <div class="welcome-section">
+                    <h2>🎯 Bem-vindo ao Dashboard de Jogos!</h2>
+                    <p>Escolha um dos jogos disponíveis para começar a diversão:</p>
+                </div>
+
+                <div class="games-grid">
+                    <div class="game-card" data-game="velha">
+                        <div class="game-icon">⭕</div>
+                        <h3>Jogo da Velha</h3>
+                        <p>Clássico jogo de estratégia para 2 jogadores ou vs IA</p>
+                        <div class="game-features">
+                            <span class="feature">🤖 IA Inteligente</span>
+                            <span class="feature">👥 2 Jogadores</span>
+                            <span class="feature">📊 Placar</span>
+                        </div>
+                        <button class="play-btn">Jogar Agora</button>
+                    </div>
+
+                    <div class="game-card" data-game="damas">
+                        <div class="game-icon">♟️</div>
+                        <h3>Damas</h3>
+                        <p>Jogo estratégico com peças que se movem diagonalmente</p>
+                        <div class="game-features">
+                            <span class="feature">👑 Dama</span>
+                            <span class="feature">🎯 Captura</span>
+                            <span class="feature">🏆 Vitória</span>
+                        </div>
+                        <button class="play-btn">Jogar Agora</button>
+                    </div>
+
+                    <div class="game-card" data-game="minado">
+                        <div class="game-icon">💣</div>
+                        <h3>Campo Minado</h3>
+                        <p>Encontre todas as minas sem explodir!</p>
+                        <div class="game-features">
+                            <span class="feature">💣 Minas</span>
+                            <span class="feature">🚩 Bandeiras</span>
+                            <span class="feature">🧠 Lógica</span>
+                        </div>
+                        <button class="play-btn">Jogar Agora</button>
+                    </div>
+
+                    <div class="game-card" data-game="batalha">
+                        <div class="game-icon">🚢</div>
+                        <h3>Batalha Naval</h3>
+                        <p>Estratégia naval para afundar a frota inimiga</p>
+                        <div class="game-features">
+                            <span class="feature">🚢 Navios</span>
+                            <span class="feature">🎯 Tiro</span>
+                            <span class="feature">⚔️ Batalha</span>
+                        </div>
+                        <button class="play-btn">Jogar Agora</button>
+                    </div>
+
+                    <div class="game-card" data-game="domino">
+                        <div class="game-icon">🎲</div>
+                        <h3>Dominó</h3>
+                        <p>Jogo clássico com peças numeradas</p>
+                        <div class="game-features">
+                            <span class="feature">🎲 Peças</span>
+                            <span class="feature">🔗 Conectar</span>
+                            <span class="feature">🏆 Pontos</span>
+                        </div>
+                        <button class="play-btn">Jogar Agora</button>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h3>📊 Estatísticas dos Jogos</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">⭕</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Jogo da Velha</span>
+                                <span class="stat-value" id="velha-stats">0 jogos</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">♟️</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Damas</span>
+                                <span class="stat-value" id="damas-stats">0 jogos</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💣</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Campo Minado</span>
+                                <span class="stat-value" id="minado-stats">0 jogos</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🚢</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Batalha Naval</span>
+                                <span class="stat-value" id="batalha-stats">0 jogos</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎲</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Dominó</span>
+                                <span class="stat-value" id="domino-stats">0 jogos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jogo da Velha -->
+            <div id="velha" class="game-section">
+                <div class="game-header">
+                    <button class="back-btn">← Voltar ao Dashboard</button>
+                    <h2>⭕ Jogo da Velha</h2>
+                </div>
+                <div id="velha-content">
+                    <div class="velha-container">
+                        <div class="game-info">
+                            <div id="status">Vez do Jogador X</div>
+                            <div class="scoreboard">
+                                <div class="score">
+                                    <span class="player" id="playerXName">X</span>
+                                    <span id="scoreX">0</span>
+                                </div>
+                                <div class="score">
+                                    <span class="player" id="playerOName">O</span>
+                                    <span id="scoreO">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="player-settings">
+                            <h3>⚙️ Configurações do Jogo</h3>
+                            <div class="game-mode-info">
+                                <p>🎮 Jogue contra um amigo ou teste suas habilidades contra a IA!</p>
+                            </div>
+                        </div>
+
+                        <div class="game-controls">
+                            <button id="modoJogo" class="btn-secondary">Modo: 2 Jogadores</button>
+                            <button id="dificuldade" class="btn-secondary" style="display: none;">Dificuldade: Fácil</button>
+                            <button id="zerarPlacar" class="btn-danger">🗑️ Zerar Placar</button>
+                        </div>
+
+                        <div class="game-area">
+                            <div class="game-board-container">
+                                <div id="tabuleiro">
+                                    <div class="celula" data-index="0"></div>
+                                    <div class="celula" data-index="1"></div>
+                                    <div class="celula" data-index="2"></div>
+                                    <div class="celula" data-index="3"></div>
+                                    <div class="celula" data-index="4"></div>
+                                    <div class="celula" data-index="5"></div>
+                                    <div class="celula" data-index="6"></div>
+                                    <div class="celula" data-index="7"></div>
+                                    <div class="celula" data-index="8"></div>
+                                </div>
+                            </div>
+
+                            <div class="game-actions">
+                                <button id="reiniciar" class="btn-primary">🔄 Reiniciar Jogo</button>
+                                <button id="desfazer" class="btn-secondary">↶ Desfazer</button>
+                            </div>
+                        </div>
+
+                        <div class="game-history">
+                            <h3>📋 Histórico de Jogadas</h3>
+                            <div id="historico"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Damas -->
+            <div id="damas" class="game-section">
+                <div class="game-header">
+                    <button class="back-btn">← Voltar ao Dashboard</button>
+                    <h2>♟️ Damas</h2>
+                </div>
+                <div id="damas-content">
+                    <div class="damas-container">
+                        <div class="damas-info">
+                            <div id="damas-status">Vez do Jogador Preto</div>
+                            <div class="damas-scoreboard">
+                                <div class="damas-score">
+                                    <span class="player">♟️ Preto</span>
+                                    <span id="damas-score-preto">0</span>
+                                </div>
+                                <div class="damas-score">
+                                    <span class="player">♟️ Branco</span>
+                                    <span id="damas-score-branco">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="damas-controls">
+                            <button id="damas-modo" class="btn-secondary">Modo: 2 Jogadores</button>
+                            <button id="damas-dificuldade" class="btn-secondary" style="display: none;">Dificuldade: Fácil</button>
+                            <button id="damas-reiniciar" class="btn-primary">🔄 Novo Jogo</button>
+                            <button id="damas-zerar" class="btn-danger">🗑️ Zerar Placar</button>
+                        </div>
+
+                        <div class="damas-board-container">
+                            <div id="damas-tabuleiro">
+                                <!-- Tabuleiro 8x8 será gerado dinamicamente -->
+                            </div>
+                        </div>
+
+                        <div class="damas-history">
+                            <h3>📋 Histórico de Movimentos</h3>
+                            <div id="damas-historico"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campo Minado -->
+            <div id="minado" class="game-section">
+                <div class="game-header">
+                    <button class="back-btn">← Voltar ao Dashboard</button>
+                    <h2>💣 Campo Minado</h2>
+                </div>
+                <div id="minado-content">
+                    <div class="minado-container">
+                        <div class="minado-info">
+                            <div id="minado-status">💣 Campo Minado - Clique para começar!</div>
+                            <div class="minado-scoreboard">
+                                <div class="minado-score">
+                                    <span class="player">🎮 Jogos</span>
+                                    <span id="minado-jogos">0</span>
+                                </div>
+                                <div class="minado-score">
+                                    <span class="player">🏆 Vitórias</span>
+                                    <span id="minado-vitorias">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="minado-stats">
+                            <div class="minado-stat">
+                                <span>🚩 Bandeiras:</span>
+                                <span id="bandeiras-restantes">10</span>
+                            </div>
+                            <div class="minado-stat">
+                                <span>⏱️ Tempo:</span>
+                                <span id="tempo">00:00</span>
+                            </div>
+                        </div>
+
+                        <div class="minado-controls">
+                            <button id="minado-novo" class="btn-primary">🆕 Novo Jogo</button>
+                            <button id="minado-dificuldade" class="btn-secondary">Dificuldade: Fácil</button>
+                            <button id="minado-zerar" class="btn-danger">🗑️ Zerar Estatísticas</button>
+                        </div>
+
+                        <div class="minado-board-container">
+                            <div id="minado-tabuleiro">
+                                <!-- Tabuleiro será gerado dinamicamente -->
+                            </div>
+                        </div>
+
+                        <div class="minado-history">
+                            <h3>📋 Histórico de Jogos</h3>
+                            <div id="minado-historico"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Batalha Naval -->
+            <div id="batalha" class="game-section">
+                <div class="game-header">
+                    <button class="back-btn">← Voltar ao Dashboard</button>
+                    <h2>🚢 Batalha Naval</h2>
+                </div>
+                <div id="batalha-content">
+                    <div class="batalha-container">
+                        <div class="batalha-info">
+                            <div id="batalha-status">🚢 Batalha Naval - Posicione seus navios!</div>
+                            <div class="batalha-scoreboard">
+                                <div class="batalha-score">
+                                    <span class="player">🎮 Jogador</span>
+                                    <span id="batalha-score-jogador">0</span>
+                                </div>
+                                <div class="batalha-score">
+                                    <span class="player">🤖 IA</span>
+                                    <span id="batalha-score-ia">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="batalha-controls">
+                            <button id="batalha-novo" class="btn-primary">🆕 Novo Jogo</button>
+                            <button id="batalha-posicionar" class="btn-secondary">📍 Posicionar Navios</button>
+                            <button id="batalha-zerar" class="btn-danger">🗑️ Zerar Placar</button>
+                        </div>
+
+                        <div class="batalha-boards">
+                            <div class="batalha-board-container">
+                                <h3>🎮 Seu Tabuleiro</h3>
+                                <div id="batalha-tabuleiro-jogador">
+                                    <!-- Tabuleiro 10x10 será gerado dinamicamente -->
+                                </div>
+                            </div>
+                            <div class="batalha-board-container">
+                                <h3>🤖 Tabuleiro da IA</h3>
+                                <div id="batalha-tabuleiro-ia">
+                                    <!-- Tabuleiro 10x10 será gerado dinamicamente -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="batalha-history">
+                            <h3>📋 Histórico de Tiros</h3>
+                            <div id="batalha-historico"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dominó -->
+            <div id="domino" class="game-section">
+                <div class="game-header">
+                    <button class="back-btn">← Voltar ao Dashboard</button>
+                    <h2>🎲 Dominó</h2>
+                </div>
+                <div id="domino-content">
+                    <div class="domino-container">
+                        <div class="domino-info">
+                            <div id="domino-status">🎲 Dominó - Distribuindo peças...</div>
+                            <div class="domino-scoreboard">
+                                <div class="domino-score">
+                                    <span class="player">🎮 Jogador</span>
+                                    <span id="domino-score-jogador">0</span>
+                                </div>
+                                <div class="domino-score">
+                                    <span class="player">🤖 IA</span>
+                                    <span id="domino-score-ia">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="domino-controls">
+                            <button id="domino-novo" class="btn-primary">🆕 Novo Jogo</button>
+                            <button id="domino-comprar" class="btn-secondary">🛒 Comprar Peça</button>
+                            <button id="domino-zerar" class="btn-danger">🗑️ Zerar Placar</button>
+                        </div>
+
+                        <div class="domino-game-area">
+                            <div class="domino-board" id="domino-board">
+                                <!-- Peças do dominó serão exibidas aqui -->
+                            </div>
+                            <div class="domino-hand" id="domino-hand">
+                                <!-- Mão do jogador será exibida aqui -->
+                            </div>
+                        </div>
+
+                        <div class="domino-history">
+                            <h3>📋 Histórico de Jogadas</h3>
+                            <div id="domino-historico"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>🎮 Dashboard de Jogos - Desenvolvido com ❤️</p>
+        </footer>
+    </div>
+
+    <script>
+        // ===== DASHBOARD DE JOGOS - VERSÃO COMPLETA =====
+
+        // 1. Variáveis Globais
+        let currentGame = 'dashboard';
+        let gameStats = {
+            velha: 0,
+            damas: 0,
+            minado: 0,
+            batalha: 0,
+            domino: 0
+        };
+
+        // 2. Referências do DOM
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const gameSections = document.querySelectorAll('.game-section');
+        const gameCards = document.querySelectorAll('.game-card');
+        const backButtons = document.querySelectorAll('.back-btn');
+        const statsElements = {
+            velha: document.getElementById('velha-stats'),
+            damas: document.getElementById('damas-stats'),
+            minado: document.getElementById('minado-stats'),
+            batalha: document.getElementById('batalha-stats'),
+            domino: document.getElementById('domino-stats')
+        };
+
+        // 3. Sistema de Navegação
+        function showGame(gameId) {
+            console.log('Mudando para jogo:', gameId);
+            
+            // Esconde todas as seções
+            gameSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active de todos os botões de navegação
+            navButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Mostra a seção selecionada
+            const targetSection = document.getElementById(gameId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            // Ativa o botão correspondente
+            const targetBtn = document.querySelector(`[data-game="${gameId}"]`);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+            
+            currentGame = gameId;
+            
+            // Inicializa jogos específicos
+            setTimeout(() => {
+                if (gameId === 'velha') {
+                    initVelhaGame();
+                } else if (gameId === 'damas') {
+                    initDamasGame();
+                } else if (gameId === 'minado') {
+                    initMinadoGame();
+                } else if (gameId === 'batalha') {
+                    initBatalhaGame();
+                } else if (gameId === 'domino') {
+                    initDominoGame();
+                }
+            }, 100);
+        }
+
+        // 4. Atualização de Estatísticas
+        function updateStats() {
+            if (statsElements.velha) statsElements.velha.textContent = `${gameStats.velha} jogos`;
+            if (statsElements.damas) statsElements.damas.textContent = `${gameStats.damas} jogos`;
+            if (statsElements.minado) statsElements.minado.textContent = `${gameStats.minado} jogos`;
+            if (statsElements.batalha) statsElements.batalha.textContent = `${gameStats.batalha} jogos`;
+            if (statsElements.domino) statsElements.domino.textContent = `${gameStats.domino} jogos`;
+        }
+
+        // 5. Incrementar Estatísticas
+        function incrementGameStats(gameType) {
+            if (gameStats.hasOwnProperty(gameType)) {
+                gameStats[gameType]++;
+                updateStats();
+                localStorage.setItem('gameStats', JSON.stringify(gameStats));
+            }
+        }
+
+        // 6. Carregar Estatísticas do localStorage
+        function loadGameStats() {
+            const savedStats = localStorage.getItem('gameStats');
+            if (savedStats) {
+                gameStats = JSON.parse(savedStats);
+                updateStats();
+            }
+        }
+
+        // 7. Event Listeners
+        function setupEventListeners() {
+            // Navegação principal
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const gameId = btn.getAttribute('data-game');
+                    showGame(gameId);
+                });
+            });
+
+            // Cards de jogos no dashboard
+            gameCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const gameId = card.getAttribute('data-game');
+                    showGame(gameId);
+                });
+            });
+
+            // Botões de voltar
+            backButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    showGame('dashboard');
+                });
+            });
+        }
+
+        // ===== JOGO DA VELHA =====
+        let tabuleiro = ['', '', '', '', '', '', '', '', ''];
+        let jogadorAtual = 'X';
+        let jogoAtivo = true;
+        let modoJogo = '2jogadores';
+        let dificuldadeIA = 'facil';
+        let placar = { X: 0, O: 0 };
+        let historicoJogadas = [];
+        let historicoTabuleiros = [];
+        let nomesJogadores = { X: 'X', O: 'O' };
+
+        function initVelhaGame() {
+            console.log('Inicializando Jogo da Velha');
+            const celulas = document.querySelectorAll('#tabuleiro .celula');
+            const botaoModo = document.getElementById('modoJogo');
+            const botaoDificuldade = document.getElementById('dificuldade');
+            const botaoReiniciar = document.getElementById('reiniciar');
+            const botaoDesfazer = document.getElementById('desfazer');
+            const botaoZerar = document.getElementById('zerarPlacar');
+
+            // Remove listeners existentes
+            celulas.forEach(celula => {
+                celula.replaceWith(celula.cloneNode(true));
+            });
+
+            // Adiciona listeners
+            document.querySelectorAll('#tabuleiro .celula').forEach((celula, index) => {
+                celula.addEventListener('click', () => lidarComClique(index));
+            });
+
+            if (botaoModo) botaoModo.addEventListener('click', alternarModoJogo);
+            if (botaoDificuldade) botaoDificuldade.addEventListener('click', alternarDificuldade);
+            if (botaoReiniciar) botaoReiniciar.addEventListener('click', reiniciarJogo);
+            if (botaoDesfazer) botaoDesfazer.addEventListener('click', desfazerJogada);
+            if (botaoZerar) botaoZerar.addEventListener('click', zerarPlacar);
+
+            inicializarNomes();
+            atualizarPlacar();
+            atualizarStatus();
+        }
+
+        function lidarComClique(index) {
+            if (!jogoAtivo || tabuleiro[index] !== '') return;
+
+            tabuleiro[index] = jogadorAtual;
+            document.querySelectorAll('#tabuleiro .celula')[index].textContent = jogadorAtual;
+            document.querySelectorAll('#tabuleiro .celula')[index].classList.add(jogadorAtual);
+
+            historicoTabuleiros.push([...tabuleiro]);
+            historicoJogadas.push(`${jogadorAtual} jogou na posição ${index + 1}`);
+
+            if (verificarVitoria()) {
+                jogoAtivo = false;
+                placar[jogadorAtual]++;
+                atualizarPlacar();
+                document.getElementById('status').textContent = `${nomesJogadores[jogadorAtual]} venceu!`;
+                incrementGameStats('velha');
+                return;
+            }
+
+            if (verificarEmpate()) {
+                jogoAtivo = false;
+                document.getElementById('status').textContent = 'Empate!';
+                return;
+            }
+
+            jogadorAtual = jogadorAtual === 'X' ? 'O' : 'X';
+            atualizarStatus();
+
+            if (modoJogo === 'ia' && jogadorAtual === 'O') {
+                setTimeout(fazerJogadaIA, 500);
+            }
+
+            atualizarHistorico();
+        }
+
+        function verificarVitoria() {
+            const combinacoes = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            return combinacoes.some(combinacao => {
+                const [a, b, c] = combinacao;
+                if (tabuleiro[a] && tabuleiro[a] === tabuleiro[b] && tabuleiro[a] === tabuleiro[c]) {
+                    document.querySelectorAll('#tabuleiro .celula')[a].classList.add('winning');
+                    document.querySelectorAll('#tabuleiro .celula')[b].classList.add('winning');
+                    document.querySelectorAll('#tabuleiro .celula')[c].classList.add('winning');
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        function verificarEmpate() {
+            return tabuleiro.every(celula => celula !== '');
+        }
+
+        function fazerJogadaIA() {
+            if (!jogoAtivo) return;
+
+            let melhorJogada;
+            if (dificuldadeIA === 'facil') {
+                melhorJogada = obterJogadaAleatoria();
+            } else if (dificuldadeIA === 'medio') {
+                melhorJogada = obterJogadaInteligente();
+            } else {
+                melhorJogada = obterMelhorJogada();
+            }
+
+            if (melhorJogada !== -1) {
+                lidarComClique(melhorJogada);
+            }
+        }
+
+        function obterJogadaAleatoria() {
+            const jogadasDisponiveis = tabuleiro.map((celula, index) => celula === '' ? index : null).filter(val => val !== null);
+            return jogadasDisponiveis[Math.floor(Math.random() * jogadasDisponiveis.length)];
+        }
+
+        function obterJogadaInteligente() {
+            // Tenta vencer
+            for (let i = 0; i < 9; i++) {
+                if (tabuleiro[i] === '') {
+                    tabuleiro[i] = 'O';
+                    if (verificarVitoria()) {
+                        tabuleiro[i] = '';
+                        return i;
+                    }
+                    tabuleiro[i] = '';
+                }
+            }
+
+            // Tenta bloquear
+            for (let i = 0; i < 9; i++) {
+                if (tabuleiro[i] === '') {
+                    tabuleiro[i] = 'X';
+                    if (verificarVitoria()) {
+                        tabuleiro[i] = '';
+                        return i;
+                    }
+                    tabuleiro[i] = '';
+                }
+            }
+
+            return obterJogadaAleatoria();
+        }
+
+        function obterMelhorJogada() {
+            return obterJogadaInteligente();
+        }
+
+        function alternarModoJogo() {
+            modoJogo = modoJogo === '2jogadores' ? 'ia' : '2jogadores';
+            const botao = document.getElementById('modoJogo');
+            const botaoDificuldade = document.getElementById('dificuldade');
+            
+            if (modoJogo === 'ia') {
+                botao.textContent = 'Modo: vs IA';
+                botaoDificuldade.style.display = 'inline-block';
+                nomesJogadores.O = 'IA';
+            } else {
+                botao.textContent = 'Modo: 2 Jogadores';
+                botaoDificuldade.style.display = 'none';
+                nomesJogadores.O = 'O';
+            }
+            
+            atualizarNomes();
+            reiniciarJogo();
+        }
+
+        function alternarDificuldade() {
+            const dificuldades = ['facil', 'medio', 'dificil'];
+            const nomes = ['Fácil', 'Médio', 'Difícil'];
+            const indexAtual = dificuldades.indexOf(dificuldadeIA);
+            const proximoIndex = (indexAtual + 1) % dificuldades.length;
+            
+            dificuldadeIA = dificuldades[proximoIndex];
+            document.getElementById('dificuldade').textContent = `Dificuldade: ${nomes[proximoIndex]}`;
+        }
+
+        function reiniciarJogo() {
+            tabuleiro = ['', '', '', '', '', '', '', '', ''];
+            jogadorAtual = 'X';
+            jogoAtivo = true;
+            historicoJogadas = [];
+            historicoTabuleiros = [];
+
+            document.querySelectorAll('#tabuleiro .celula').forEach(celula => {
+                celula.textContent = '';
+                celula.className = 'celula';
+            });
+
+            atualizarStatus();
+            atualizarHistorico();
+        }
+
+        function desfazerJogada() {
+            if (historicoTabuleiros.length > 1) {
+                historicoTabuleiros.pop();
+                historicoJogadas.pop();
+                tabuleiro = [...historicoTabuleiros[historicoTabuleiros.length - 1]];
+                
+                document.querySelectorAll('#tabuleiro .celula').forEach((celula, index) => {
+                    celula.textContent = tabuleiro[index];
+                    celula.className = 'celula';
+                    if (tabuleiro[index]) celula.classList.add(tabuleiro[index]);
+                });
+
+                jogadorAtual = jogadorAtual === 'X' ? 'O' : 'X';
+                atualizarStatus();
+                atualizarHistorico();
+            }
+        }
+
+        function zerarPlacar() {
+            placar = { X: 0, O: 0 };
+            atualizarPlacar();
+        }
+
+        function inicializarNomes() {
+            document.getElementById('playerXName').textContent = nomesJogadores.X;
+            document.getElementById('playerOName').textContent = nomesJogadores.O;
+        }
+
+        function atualizarNomes() {
+            document.getElementById('playerXName').textContent = nomesJogadores.X;
+            document.getElementById('playerOName').textContent = nomesJogadores.O;
+        }
+
+        function atualizarPlacar() {
+            document.getElementById('scoreX').textContent = placar.X;
+            document.getElementById('scoreO').textContent = placar.O;
+        }
+
+        function atualizarStatus() {
+            document.getElementById('status').textContent = `Vez do ${nomesJogadores[jogadorAtual]}`;
+        }
+
+        function atualizarHistorico() {
+            const historico = document.getElementById('historico');
+            historico.innerHTML = '';
+            historicoJogadas.forEach(jogada => {
+                const item = document.createElement('div');
+                item.className = 'historia-item';
+                item.textContent = jogada;
+                historico.appendChild(item);
+            });
+            historico.scrollTop = historico.scrollHeight;
+        }
+
+        // ===== DAMAS =====
+        let damasTabuleiro = [];
+        let jogadorAtualDamas = 'preto';
+        let jogoAtivoDamas = true;
+        let pecaSelecionada = null;
+        let movimentosPossiveis = [];
+        let capturasObrigatorias = [];
+        let placarDamas = { preto: 0, branco: 0 };
+        let historicoDamas = [];
+        let modoJogoDamas = '2jogadores';
+        let dificuldadeIADamas = 'facil';
+
+        function initDamasGame() {
+            console.log('Inicializando Damas');
+            inicializarTabuleiroDamas();
+            renderizarTabuleiroDamas();
+            
+            const botaoModo = document.getElementById('damas-modo');
+            const botaoDificuldade = document.getElementById('damas-dificuldade');
+            const botaoReiniciar = document.getElementById('damas-reiniciar');
+            const botaoZerar = document.getElementById('damas-zerar');
+
+            if (botaoModo) botaoModo.addEventListener('click', alternarModoJogoDamas);
+            if (botaoDificuldade) botaoDificuldade.addEventListener('click', alternarDificuldadeIADamas);
+            if (botaoReiniciar) botaoReiniciar.addEventListener('click', reiniciarJogoDamas);
+            if (botaoZerar) botaoZerar.addEventListener('click', zerarPlacarDamas);
+
+            atualizarStatusDamas();
+            atualizarPlacarDamas();
+        }
+
+        function inicializarTabuleiroDamas() {
+            damasTabuleiro = Array(8).fill(null).map(() => Array(8).fill(null));
+            
+            // Posiciona peças pretas
+            for (let linha = 0; linha < 3; linha++) {
+                for (let coluna = 0; coluna < 8; coluna++) {
+                    if ((linha + coluna) % 2 === 1) {
+                        damasTabuleiro[linha][coluna] = { tipo: 'peao', cor: 'preto' };
+                    }
+                }
+            }
+            
+            // Posiciona peças brancas
+            for (let linha = 5; linha < 8; linha++) {
+                for (let coluna = 0; coluna < 8; coluna++) {
+                    if ((linha + coluna) % 2 === 1) {
+                        damasTabuleiro[linha][coluna] = { tipo: 'peao', cor: 'branco' };
+                    }
+                }
+            }
+        }
+
+        function renderizarTabuleiroDamas() {
+            const tabuleiro = document.getElementById('damas-tabuleiro');
+            if (!tabuleiro) {
+                console.error('Tabuleiro de damas não encontrado');
+                return;
+            }
+
+            tabuleiro.innerHTML = '';
+            
+            for (let linha = 0; linha < 8; linha++) {
+                for (let coluna = 0; coluna < 8; coluna++) {
+                    const casa = document.createElement('div');
+                    casa.className = `casa-damas ${(linha + coluna) % 2 === 0 ? 'casa-branca' : 'casa-preta'}`;
+                    casa.dataset.linha = linha;
+                    casa.dataset.coluna = coluna;
+                    
+                    const peca = damasTabuleiro[linha][coluna];
+                    if (peca) {
+                        const pecaElement = document.createElement('div');
+                        pecaElement.className = `peca-damas ${peca.cor} ${peca.tipo === 'dama' ? 'dama' : ''}`;
+                        pecaElement.textContent = peca.tipo === 'dama' ? '♔' : '●';
+                        casa.appendChild(pecaElement);
+                    }
+                    
+                    casa.addEventListener('click', () => lidarComCliqueDamas(linha, coluna));
+                    tabuleiro.appendChild(casa);
+                }
+            }
+        }
+
+        function lidarComCliqueDamas(linha, coluna) {
+            if (!jogoAtivoDamas) return;
+
+            const peca = damasTabuleiro[linha][coluna];
+            
+            if (pecaSelecionada === null) {
+                // Selecionar peça
+                if (peca && peca.cor === jogadorAtualDamas) {
+                    pecaSelecionada = { linha, coluna };
+                    movimentosPossiveis = obterMovimentosPossiveis(linha, coluna);
+                    capturasObrigatorias = obterCapturasObrigatorias(linha, coluna);
+                    renderizarTabuleiroDamas();
+                    destacarMovimentos();
+                }
+            } else {
+                // Mover peça
+                if (pecaSelecionada.linha === linha && pecaSelecionada.coluna === coluna) {
+                    // Desselecionar
+                    pecaSelecionada = null;
+                    movimentosPossiveis = [];
+                    capturasObrigatorias = [];
+                    renderizarTabuleiroDamas();
+                } else if (movimentosPossiveis.some(mov => mov.linha === linha && mov.coluna === coluna)) {
+                    fazerMovimentoDamas(linha, coluna);
+                }
+            }
+        }
+
+        function obterMovimentosPossiveis(linha, coluna) {
+            const peca = damasTabuleiro[linha][coluna];
+            if (!peca) return [];
+
+            const movimentos = [];
+            const direcoes = peca.tipo === 'dama' ? 
+                [[-1, -1], [-1, 1], [1, -1], [1, 1]] :
+                peca.cor === 'preto' ? [[1, -1], [1, 1]] : [[-1, -1], [-1, 1]];
+
+            for (const [dl, dc] of direcoes) {
+                const novaLinha = linha + dl;
+                const novaColuna = coluna + dc;
+                
+                if (novaLinha >= 0 && novaLinha < 8 && novaColuna >= 0 && novaColuna < 8) {
+                    if (!damasTabuleiro[novaLinha][novaColuna]) {
+                        movimentos.push({ linha: novaLinha, coluna: novaColuna });
+                    }
+                }
+            }
+
+            return movimentos;
+        }
+
+        function obterCapturasObrigatorias(linha, coluna) {
+            const peca = damasTabuleiro[linha][coluna];
+            if (!peca) return [];
+
+            const capturas = [];
+            const direcoes = peca.tipo === 'dama' ? 
+                [[-1, -1], [-1, 1], [1, -1], [1, 1]] :
+                peca.cor === 'preto' ? [[1, -1], [1, 1]] : [[-1, -1], [-1, 1]];
+
+            for (const [dl, dc] of direcoes) {
+                const linhaIntermedia = linha + dl;
+                const colunaIntermedia = coluna + dc;
+                const novaLinha = linha + 2 * dl;
+                const novaColuna = coluna + 2 * dc;
+                
+                if (novaLinha >= 0 && novaLinha < 8 && novaColuna >= 0 && novaColuna < 8) {
+                    const pecaIntermedia = damasTabuleiro[linhaIntermedia][colunaIntermedia];
+                    if (pecaIntermedia && pecaIntermedia.cor !== peca.cor && !damasTabuleiro[novaLinha][novaColuna]) {
+                        capturas.push({ linha: novaLinha, coluna: novaColuna, capturada: { linha: linhaIntermedia, coluna: colunaIntermedia } });
+                    }
+                }
+            }
+
+            return capturas;
+        }
+
+        function destacarMovimentos() {
+            if (pecaSelecionada) {
+                const casa = document.querySelector(`[data-linha="${pecaSelecionada.linha}"][data-coluna="${pecaSelecionada.coluna}"]`);
+                if (casa) casa.classList.add('peca-selecionada');
+            }
+
+            movimentosPossiveis.forEach(mov => {
+                const casa = document.querySelector(`[data-linha="${mov.linha}"][data-coluna="${mov.coluna}"]`);
+                if (casa) casa.classList.add('movimento-possivel');
+            });
+        }
+
+        function fazerMovimentoDamas(linha, coluna) {
+            const peca = damasTabuleiro[pecaSelecionada.linha][pecaSelecionada.coluna];
+            damasTabuleiro[linha][coluna] = peca;
+            damasTabuleiro[pecaSelecionada.linha][pecaSelecionada.coluna] = null;
+
+            // Verificar captura
+            const captura = capturasObrigatorias.find(cap => cap.linha === linha && cap.coluna === coluna);
+            if (captura) {
+                damasTabuleiro[captura.capturada.linha][captura.capturada.coluna] = null;
+            }
+
+            // Verificar se vira dama
+            if (peca.tipo === 'peao') {
+                if ((peca.cor === 'preto' && linha === 7) || (peca.cor === 'branco' && linha === 0)) {
+                    peca.tipo = 'dama';
+                }
+            }
+
+            // Adicionar ao histórico
+            historicoDamas.push(`${peca.cor} moveu de (${pecaSelecionada.linha + 1}, ${pecaSelecionada.coluna + 1}) para (${linha + 1}, ${coluna + 1})`);
+            atualizarHistoricoDamas();
+
+            pecaSelecionada = null;
+            movimentosPossiveis = [];
+            capturasObrigatorias = [];
+
+            // Verificar fim de jogo
+            if (verificarFimJogoDamas()) {
+                jogoAtivoDamas = false;
+                placarDamas[jogadorAtualDamas]++;
+                atualizarPlacarDamas();
+                document.getElementById('damas-status').textContent = `${jogadorAtualDamas} venceu!`;
+                incrementGameStats('damas');
+                return;
+            }
+
+            jogadorAtualDamas = jogadorAtualDamas === 'preto' ? 'branco' : 'preto';
+            atualizarStatusDamas();
+
+            if (modoJogoDamas === 'ia' && jogadorAtualDamas === 'branco') {
+                setTimeout(fazerJogadaIADamas, 1000);
+            }
+
+            renderizarTabuleiroDamas();
+        }
+
+        function verificarFimJogoDamas() {
+            const pecasPretas = [];
+            const pecasBrancas = [];
+
+            for (let linha = 0; linha < 8; linha++) {
+                for (let coluna = 0; coluna < 8; coluna++) {
+                    const peca = damasTabuleiro[linha][coluna];
+                    if (peca) {
+                        if (peca.cor === 'preto') pecasPretas.push({ linha, coluna });
+                        else pecasBrancas.push({ linha, coluna });
+                    }
+                }
+            }
+
+            return pecasPretas.length === 0 || pecasBrancas.length === 0;
+        }
+
+        function fazerJogadaIADamas() {
+            if (!jogoAtivoDamas || jogadorAtualDamas !== 'branco') return;
+
+            console.log('IA do Damas: Iniciando jogada...');
+            
+            // Primeiro, verificar se há capturas obrigatórias
+            const todasCapturas = [];
+            for (let linha = 0; linha < 8; linha++) {
+                for (let coluna = 0; coluna < 8; coluna++) {
+                    const peca = damasTabuleiro[linha][coluna];
+                    if (peca && peca.cor === 'branco') {
+                        const capturas = obterCapturasObrigatorias(linha, coluna);
+                        capturas.forEach(captura => {
+                            todasCapturas.push({
+                                origem: { linha, coluna },
+                                destino: { linha: captura.linha, coluna: captura.coluna },
+                                capturada: captura.capturada
+                            });
+                        });
+                    }
+                }
+            }
+
+            if (todasCapturas.length > 0) {
+                // Fazer uma captura aleatória
+                const capturaEscolhida = todasCapturas[Math.floor(Math.random() * todasCapturas.length)];
+                console.log('IA do Damas: Fazendo captura:', capturaEscolhida);
+                pecaSelecionada = capturaEscolhida.origem;
+                fazerMovimentoDamas(capturaEscolhida.destino.linha, capturaEscolhida.destino.coluna);
+                return;
+            }
+
+            // Se não há capturas, fazer um movimento normal
+            const todosMovimentos = [];
+            for (let linha = 0; linha < 8; linha++) {
+                for (let coluna = 0; coluna < 8; coluna++) {
+                    const peca = damasTabuleiro[linha][coluna];
+                    if (peca && peca.cor === 'branco') {
+                        const movimentos = obterMovimentosPossiveis(linha, coluna);
+                        movimentos.forEach(movimento => {
+                            todosMovimentos.push({
+                                origem: { linha, coluna },
+                                destino: movimento
+                            });
+                        });
+                    }
+                }
+            }
+
+            if (todosMovimentos.length > 0) {
+                const movimentoEscolhido = todosMovimentos[Math.floor(Math.random() * todosMovimentos.length)];
+                console.log('IA do Damas: Fazendo movimento:', movimentoEscolhido);
+                pecaSelecionada = movimentoEscolhido.origem;
+                fazerMovimentoDamas(movimentoEscolhido.destino.linha, movimentoEscolhido.destino.coluna);
+            } else {
+                console.log('IA do Damas: Nenhum movimento possível');
+            }
+        }
+
+        function alternarModoJogoDamas() {
+            modoJogoDamas = modoJogoDamas === '2jogadores' ? 'ia' : '2jogadores';
+            const botao = document.getElementById('damas-modo');
+            const botaoDificuldade = document.getElementById('damas-dificuldade');
+            
+            if (modoJogoDamas === 'ia') {
+                botao.textContent = 'Modo: vs IA';
+                botaoDificuldade.style.display = 'inline-block';
+            } else {
+                botao.textContent = 'Modo: 2 Jogadores';
+                botaoDificuldade.style.display = 'none';
+            }
+            
+            reiniciarJogoDamas();
+        }
+
+        function alternarDificuldadeIADamas() {
+            const dificuldades = ['facil', 'medio', 'dificil'];
+            const nomes = ['Fácil', 'Médio', 'Difícil'];
+            const indexAtual = dificuldades.indexOf(dificuldadeIADamas);
+            const proximoIndex = (indexAtual + 1) % dificuldades.length;
+            
+            dificuldadeIADamas = dificuldades[proximoIndex];
+            document.getElementById('damas-dificuldade').textContent = `Dificuldade: ${nomes[proximoIndex]}`;
+        }
+
+        function reiniciarJogoDamas() {
+            inicializarTabuleiroDamas();
+            jogadorAtualDamas = 'preto';
+            jogoAtivoDamas = true;
+            pecaSelecionada = null;
+            movimentosPossiveis = [];
+            capturasObrigatorias = [];
+            historicoDamas = [];
+            
+            renderizarTabuleiroDamas();
+            atualizarStatusDamas();
+            atualizarHistoricoDamas();
+        }
+
+        function zerarPlacarDamas() {
+            placarDamas = { preto: 0, branco: 0 };
+            atualizarPlacarDamas();
+        }
+
+        function atualizarStatusDamas() {
+            document.getElementById('damas-status').textContent = `Vez do Jogador ${jogadorAtualDamas === 'preto' ? 'Preto' : 'Branco'}`;
+        }
+
+        function atualizarPlacarDamas() {
+            document.getElementById('damas-score-preto').textContent = placarDamas.preto;
+            document.getElementById('damas-score-branco').textContent = placarDamas.branco;
+        }
+
+        function atualizarHistoricoDamas() {
+            const historico = document.getElementById('damas-historico');
+            historico.innerHTML = '';
+            historicoDamas.forEach(movimento => {
+                const item = document.createElement('div');
+                item.className = 'historia-item';
+                item.textContent = movimento;
+                historico.appendChild(item);
+            });
+            historico.scrollTop = historico.scrollHeight;
+        }
+
+        // ===== CAMPO MINADO =====
+        let minadoTabuleiro = [];
+        let tabuleiroRevelado = [];
+        let tabuleiroBandeiras = [];
+        let jogoTerminado = false;
+        let tempoInicio = null;
+        let cronometroInterval = null;
+        let estatisticasMinado = { jogos: 0, vitorias: 0, melhorTempo: null };
+        let dificuldadeMinado = 'facil';
+
+        function initMinadoGame() {
+            console.log('Inicializando Campo Minado');
+            const botaoNovo = document.getElementById('minado-novo');
+            const botaoDificuldade = document.getElementById('minado-dificuldade');
+            const botaoZerar = document.getElementById('minado-zerar');
+
+            if (botaoNovo) botaoNovo.addEventListener('click', novoJogoMinado);
+            if (botaoDificuldade) botaoDificuldade.addEventListener('click', alternarDificuldadeMinado);
+            if (botaoZerar) botaoZerar.addEventListener('click', zerarEstatisticasMinado);
+
+            carregarEstatisticasMinado();
+            novoJogoMinado();
+        }
+
+        function novoJogoMinado() {
+            const dimensoes = {
+                facil: { linhas: 9, colunas: 9, minas: 10 },
+                medio: { linhas: 16, colunas: 16, minas: 40 },
+                dificil: { linhas: 16, colunas: 30, minas: 99 }
+            };
+
+            const config = dimensoes[dificuldadeMinado];
+            minadoTabuleiro = Array(config.linhas).fill(null).map(() => Array(config.colunas).fill(0));
+            tabuleiroRevelado = Array(config.linhas).fill(null).map(() => Array(config.colunas).fill(false));
+            tabuleiroBandeiras = Array(config.linhas).fill(null).map(() => Array(config.colunas).fill(false));
+            jogoTerminado = false;
+
+            // Colocar minas
+            let minasColocadas = 0;
+            while (minasColocadas < config.minas) {
+                const linha = Math.floor(Math.random() * config.linhas);
+                const coluna = Math.floor(Math.random() * config.colunas);
+                if (minadoTabuleiro[linha][coluna] !== -1) {
+                    minadoTabuleiro[linha][coluna] = -1;
+                    minasColocadas++;
+                }
+            }
+
+            // Calcular números
+            for (let linha = 0; linha < config.linhas; linha++) {
+                for (let coluna = 0; coluna < config.colunas; coluna++) {
+                    if (minadoTabuleiro[linha][coluna] !== -1) {
+                        let count = 0;
+                        for (let dl = -1; dl <= 1; dl++) {
+                            for (let dc = -1; dc <= 1; dc++) {
+                                const nl = linha + dl;
+                                const nc = coluna + dc;
+                                if (nl >= 0 && nl < config.linhas && nc >= 0 && nc < config.colunas) {
+                                    if (minadoTabuleiro[nl][nc] === -1) count++;
+                                }
+                            }
+                        }
+                        minadoTabuleiro[linha][coluna] = count;
+                    }
+                }
+            }
+
+            renderizarTabuleiroMinado();
+            atualizarPlacarMinado();
+            iniciarCronometro();
+        }
+
+        function renderizarTabuleiroMinado() {
+            const tabuleiro = document.getElementById('minado-tabuleiro');
+            if (!tabuleiro) {
+                console.error('Tabuleiro de campo minado não encontrado');
+                return;
+            }
+
+            const dimensoes = {
+                facil: { linhas: 9, colunas: 9 },
+                medio: { linhas: 16, colunas: 16 },
+                dificil: { linhas: 16, colunas: 30 }
+            };
+
+            const config = dimensoes[dificuldadeMinado];
+            tabuleiro.innerHTML = '';
+            tabuleiro.style.gridTemplateColumns = `repeat(${config.colunas}, 1fr)`;
+
+            for (let linha = 0; linha < config.linhas; linha++) {
+                for (let coluna = 0; coluna < config.colunas; coluna++) {
+                    const casa = document.createElement('div');
+                    casa.className = 'casa-minado';
+                    casa.dataset.linha = linha;
+                    casa.dataset.coluna = coluna;
+                    
+                    casa.addEventListener('click', () => revelarCasaMinado(linha, coluna));
+                    casa.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        alternarBandeiraMinado(linha, coluna);
+                    });
+                    
+                    tabuleiro.appendChild(casa);
+                }
+            }
+        }
+
+        function revelarCasaMinado(linha, coluna) {
+            if (jogoTerminado || tabuleiroRevelado[linha][coluna] || tabuleiroBandeiras[linha][coluna]) return;
+
+            tabuleiroRevelado[linha][coluna] = true;
+            const casa = document.querySelector(`[data-linha="${linha}"][data-coluna="${coluna}"]`);
+            
+            if (minadoTabuleiro[linha][coluna] === -1) {
+                // Mina!
+                casa.classList.add('mina');
+                casa.textContent = '💣';
+                fimJogoMinado(false);
+            } else {
+                casa.classList.add('revelada');
+                if (minadoTabuleiro[linha][coluna] > 0) {
+                    casa.textContent = minadoTabuleiro[linha][coluna];
+                    casa.classList.add(`numero-${minadoTabuleiro[linha][coluna]}`);
+                } else {
+                    // Revelar casas adjacentes
+                    for (let dl = -1; dl <= 1; dl++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            const nl = linha + dl;
+                            const nc = coluna + dc;
+                            if (nl >= 0 && nl < minadoTabuleiro.length && nc >= 0 && nc < minadoTabuleiro[0].length) {
+                                if (!tabuleiroRevelado[nl][nc] && !tabuleiroBandeiras[nl][nc]) {
+                                    revelarCasaMinado(nl, nc);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                verificarVitoriaMinado();
+            }
+        }
+
+        function alternarBandeiraMinado(linha, coluna) {
+            if (jogoTerminado || tabuleiroRevelado[linha][coluna]) return;
+
+            tabuleiroBandeiras[linha][coluna] = !tabuleiroBandeiras[linha][coluna];
+            const casa = document.querySelector(`[data-linha="${linha}"][data-coluna="${coluna}"]`);
+            
+            if (tabuleiroBandeiras[linha][coluna]) {
+                casa.classList.add('bandeira');
+                casa.textContent = '🚩';
+            } else {
+                casa.classList.remove('bandeira');
+                casa.textContent = '';
+            }
+            
+            atualizarBandeirasRestantes();
+        }
+
+        function verificarVitoriaMinado() {
+            const dimensoes = {
+                facil: { linhas: 9, colunas: 9, minas: 10 },
+                medio: { linhas: 16, colunas: 16, minas: 40 },
+                dificil: { linhas: 16, colunas: 30, minas: 99 }
+            };
+
+            const config = dimensoes[dificuldadeMinado];
+            let casasReveladas = 0;
+            
+            for (let linha = 0; linha < config.linhas; linha++) {
+                for (let coluna = 0; coluna < config.colunas; coluna++) {
+                    if (tabuleiroRevelado[linha][coluna]) casasReveladas++;
+                }
+            }
+            
+            if (casasReveladas === config.linhas * config.colunas - config.minas) {
+                fimJogoMinado(true);
+            }
+        }
+
+        function fimJogoMinado(vitoria) {
+            jogoTerminado = true;
+            pararCronometro();
+            
+            if (vitoria) {
+                estatisticasMinado.vitorias++;
+                document.getElementById('minado-status').textContent = '🎉 Parabéns! Você venceu!';
+                incrementGameStats('minado');
+            } else {
+                document.getElementById('minado-status').textContent = '💥 Game Over! Você perdeu!';
+            }
+            
+            estatisticasMinado.jogos++;
+            salvarEstatisticasMinado();
+            atualizarPlacarMinado();
+        }
+
+        function iniciarCronometro() {
+            tempoInicio = Date.now();
+            cronometroInterval = setInterval(() => {
+                const tempoDecorrido = Math.floor((Date.now() - tempoInicio) / 1000);
+                const minutos = Math.floor(tempoDecorrido / 60);
+                const segundos = tempoDecorrido % 60;
+                document.getElementById('tempo').textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function pararCronometro() {
+            if (cronometroInterval) {
+                clearInterval(cronometroInterval);
+                cronometroInterval = null;
+            }
+        }
+
+        function alternarDificuldadeMinado() {
+            const dificuldades = ['facil', 'medio', 'dificil'];
+            const nomes = ['Fácil', 'Médio', 'Difícil'];
+            const indexAtual = dificuldades.indexOf(dificuldadeMinado);
+            const proximoIndex = (indexAtual + 1) % dificuldades.length;
+            
+            dificuldadeMinado = dificuldades[proximoIndex];
+            document.getElementById('minado-dificuldade').textContent = `Dificuldade: ${nomes[proximoIndex]}`;
+            novoJogoMinado();
+        }
+
+        function zerarEstatisticasMinado() {
+            estatisticasMinado = { jogos: 0, vitorias: 0, melhorTempo: null };
+            salvarEstatisticasMinado();
+            atualizarPlacarMinado();
+        }
+
+        function atualizarPlacarMinado() {
+            document.getElementById('minado-jogos').textContent = estatisticasMinado.jogos;
+            document.getElementById('minado-vitorias').textContent = estatisticasMinado.vitorias;
+        }
+
+        function atualizarBandeirasRestantes() {
+            const dimensoes = {
+                facil: { minas: 10 },
+                medio: { minas: 40 },
+                dificil: { minas: 99 }
+            };
+
+            const config = dimensoes[dificuldadeMinado];
+            let bandeirasUsadas = 0;
+            
+            for (let linha = 0; linha < tabuleiroBandeiras.length; linha++) {
+                for (let coluna = 0; coluna < tabuleiroBandeiras[linha].length; coluna++) {
+                    if (tabuleiroBandeiras[linha][coluna]) bandeirasUsadas++;
+                }
+            }
+            
+            document.getElementById('bandeiras-restantes').textContent = config.minas - bandeirasUsadas;
+        }
+
+        function carregarEstatisticasMinado() {
+            const saved = localStorage.getItem('estatisticasMinado');
+            if (saved) {
+                estatisticasMinado = JSON.parse(saved);
+            }
+        }
+
+        function salvarEstatisticasMinado() {
+            localStorage.setItem('estatisticasMinado', JSON.stringify(estatisticasMinado));
+        }
+
+        // ===== BATALHA NAVAL =====
+        let batalhaTabuleiroJogador = [];
+        let batalhaTabuleiroIA = [];
+        let batalhaTabuleiroRevelado = [];
+        let batalhaTabuleiroReveladoIA = [];
+        let jogoAtivoBatalha = true;
+        let fasePosicionamento = true;
+        let naviosRestantes = { jogador: 5, ia: 5 };
+        let placarBatalha = { jogador: 0, ia: 0 };
+        let historicoBatalha = [];
+        let turnoJogador = true;
+
+        function initBatalhaGame() {
+            console.log('Inicializando Batalha Naval');
+            inicializarTabuleirosBatalha();
+            renderizarTabuleirosBatalha();
+            
+            const botaoNovo = document.getElementById('batalha-novo');
+            const botaoPosicionar = document.getElementById('batalha-posicionar');
+            const botaoZerar = document.getElementById('batalha-zerar');
+
+            if (botaoNovo) botaoNovo.addEventListener('click', novoJogoBatalha);
+            if (botaoPosicionar) botaoPosicionar.addEventListener('click', posicionarNaviosAutomaticamente);
+            if (botaoZerar) botaoZerar.addEventListener('click', zerarPlacarBatalha);
+
+            atualizarStatusBatalha();
+            atualizarPlacarBatalha();
+        }
+
+        function inicializarTabuleirosBatalha() {
+            batalhaTabuleiroJogador = Array(10).fill(null).map(() => Array(10).fill(0));
+            batalhaTabuleiroIA = Array(10).fill(null).map(() => Array(10).fill(0));
+            batalhaTabuleiroRevelado = Array(10).fill(null).map(() => Array(10).fill(false));
+            batalhaTabuleiroReveladoIA = Array(10).fill(null).map(() => Array(10).fill(false));
+        }
+
+        function renderizarTabuleirosBatalha() {
+            renderizarTabuleiroBatalha('batalha-tabuleiro-jogador', batalhaTabuleiroJogador, true);
+            renderizarTabuleiroBatalha('batalha-tabuleiro-ia', batalhaTabuleiroIA, false);
+        }
+
+        function renderizarTabuleiroBatalha(id, tabuleiro, ehJogador) {
+            const elemento = document.getElementById(id);
+            if (!elemento) {
+                console.error('Elemento não encontrado:', id);
+                return;
+            }
+
+            elemento.innerHTML = '';
+            elemento.style.gridTemplateColumns = 'repeat(10, 1fr)';
+
+            for (let linha = 0; linha < 10; linha++) {
+                for (let coluna = 0; coluna < 10; coluna++) {
+                    const casa = document.createElement('div');
+                    casa.className = 'casa-batalha';
+                    casa.dataset.linha = linha;
+                    casa.dataset.coluna = coluna;
+                    
+                    if (ehJogador) {
+                        // Tabuleiro do jogador - mostra navios e tiros da IA
+                        if (tabuleiro[linha][coluna] === 1) {
+                            if (batalhaTabuleiroReveladoIA[linha][coluna]) {
+                                casa.classList.add('acerto');
+                                casa.textContent = '💥';
+                            } else {
+                                casa.classList.add('navio');
+                                casa.textContent = '🚢';
+                            }
+                        } else if (batalhaTabuleiroReveladoIA[linha][coluna]) {
+                            casa.classList.add('erro');
+                            casa.textContent = '💧';
+                        }
+                    } else {
+                        // Tabuleiro da IA - só mostra tiros do jogador
+                        if (batalhaTabuleiroRevelado[linha][coluna]) {
+                            if (tabuleiro[linha][coluna] === 1) {
+                                casa.classList.add('acerto');
+                                casa.textContent = '💥';
+                            } else {
+                                casa.classList.add('erro');
+                                casa.textContent = '💧';
+                            }
+                        } else if (jogoAtivoBatalha && !fasePosicionamento && turnoJogador) {
+                            casa.addEventListener('click', () => atirarBatalha(linha, coluna));
+                        }
+                    }
+                    
+                    elemento.appendChild(casa);
+                }
+            }
+        }
+
+        function posicionarNaviosAutomaticamente() {
+            // Limpar tabuleiros
+            inicializarTabuleirosBatalha();
+            
+            // Posicionar navios do jogador
+            const navios = [5, 4, 3, 3, 2]; // Tamanhos dos navios
+            for (const tamanho of navios) {
+                let posicionado = false;
+                let tentativas = 0;
+                while (!posicionado && tentativas < 100) {
+                    const linha = Math.floor(Math.random() * 10);
+                    const coluna = Math.floor(Math.random() * 10);
+                    const horizontal = Math.random() < 0.5;
+                    
+                    if (podePosicionarNavio(batalhaTabuleiroJogador, linha, coluna, tamanho, horizontal)) {
+                        posicionarNavio(batalhaTabuleiroJogador, linha, coluna, tamanho, horizontal);
+                        posicionado = true;
+                    }
+                    tentativas++;
+                }
+            }
+
+            // Posicionar navios da IA
+            for (const tamanho of navios) {
+                let posicionado = false;
+                let tentativas = 0;
+                while (!posicionado && tentativas < 100) {
+                    const linha = Math.floor(Math.random() * 10);
+                    const coluna = Math.floor(Math.random() * 10);
+                    const horizontal = Math.random() < 0.5;
+                    
+                    if (podePosicionarNavio(batalhaTabuleiroIA, linha, coluna, tamanho, horizontal)) {
+                        posicionarNavio(batalhaTabuleiroIA, linha, coluna, tamanho, horizontal);
+                        posicionado = true;
+                    }
+                    tentativas++;
+                }
+            }
+
+            fasePosicionamento = false;
+            turnoJogador = true;
+            atualizarStatusBatalha();
+            renderizarTabuleirosBatalha();
+            historicoBatalha.push('Navios posicionados! Jogo iniciado!');
+            atualizarHistoricoBatalha();
+        }
+
+        function podePosicionarNavio(tabuleiro, linha, coluna, tamanho, horizontal) {
+            if (horizontal) {
+                if (coluna + tamanho > 10) return false;
+                for (let c = coluna; c < coluna + tamanho; c++) {
+                    if (tabuleiro[linha][c] === 1) return false;
+                }
+            } else {
+                if (linha + tamanho > 10) return false;
+                for (let l = linha; l < linha + tamanho; l++) {
+                    if (tabuleiro[l][coluna] === 1) return false;
+                }
+            }
+            return true;
+        }
+
+        function posicionarNavio(tabuleiro, linha, coluna, tamanho, horizontal) {
+            if (horizontal) {
+                for (let c = coluna; c < coluna + tamanho; c++) {
+                    tabuleiro[linha][c] = 1;
+                }
+            } else {
+                for (let l = linha; l < linha + tamanho; l++) {
+                    tabuleiro[l][coluna] = 1;
+                }
+            }
+        }
+
+        function atirarBatalha(linha, coluna) {
+            if (!jogoAtivoBatalha || fasePosicionamento || batalhaTabuleiroRevelado[linha][coluna] || !turnoJogador) return;
+
+            batalhaTabuleiroRevelado[linha][coluna] = true;
+            const acerto = batalhaTabuleiroIA[linha][coluna] === 1;
+            
+            historicoBatalha.push(`Jogador atirou em (${linha + 1}, ${coluna + 1}): ${acerto ? 'ACERTO!' : 'ÁGUA'}`);
+            atualizarHistoricoBatalha();
+
+            if (acerto) {
+                naviosRestantes.ia--;
+                if (naviosRestantes.ia === 0) {
+                    fimJogoBatalha(true);
+                    return;
+                }
+            }
+
+            turnoJogador = false;
+            atualizarStatusBatalha();
+            renderizarTabuleirosBatalha();
+
+            // IA atira após 1 segundo
+            setTimeout(() => atirarIA(), 1000);
+        }
+
+        function atirarIA() {
+            if (!jogoAtivoBatalha) return;
+
+            let linha, coluna;
+            let tentativas = 0;
+            do {
+                linha = Math.floor(Math.random() * 10);
+                coluna = Math.floor(Math.random() * 10);
+                tentativas++;
+            } while (batalhaTabuleiroReveladoIA[linha][coluna] && tentativas < 100);
+
+            if (tentativas >= 100) {
+                // Se não conseguir encontrar posição, fim de jogo
+                fimJogoBatalha(true);
+                return;
+            }
+
+            batalhaTabuleiroReveladoIA[linha][coluna] = true;
+            const acerto = batalhaTabuleiroJogador[linha][coluna] === 1;
+            
+            historicoBatalha.push(`IA atirou em (${linha + 1}, ${coluna + 1}): ${acerto ? 'ACERTO!' : 'ÁGUA'}`);
+            atualizarHistoricoBatalha();
+
+            if (acerto) {
+                naviosRestantes.jogador--;
+                if (naviosRestantes.jogador === 0) {
+                    fimJogoBatalha(false);
+                    return;
+                }
+            }
+
+            turnoJogador = true;
+            atualizarStatusBatalha();
+            renderizarTabuleirosBatalha();
+        }
+
+        function fimJogoBatalha(vitoria) {
+            jogoAtivoBatalha = false;
+            if (vitoria) {
+                placarBatalha.jogador++;
+                document.getElementById('batalha-status').textContent = '🎉 Você venceu!';
+                incrementGameStats('batalha');
+            } else {
+                placarBatalha.ia++;
+                document.getElementById('batalha-status').textContent = '💥 IA venceu!';
+            }
+            atualizarPlacarBatalha();
+        }
+
+        function novoJogoBatalha() {
+            inicializarTabuleirosBatalha();
+            jogoAtivoBatalha = true;
+            fasePosicionamento = true;
+            turnoJogador = true;
+            naviosRestantes = { jogador: 5, ia: 5 };
+            historicoBatalha = [];
+            
+            atualizarStatusBatalha();
+            renderizarTabuleirosBatalha();
+            atualizarHistoricoBatalha();
+        }
+
+        function zerarPlacarBatalha() {
+            placarBatalha = { jogador: 0, ia: 0 };
+            atualizarPlacarBatalha();
+        }
+
+        function atualizarStatusBatalha() {
+            if (fasePosicionamento) {
+                document.getElementById('batalha-status').textContent = '🚢 Clique em "Posicionar Navios" para começar!';
+            } else if (turnoJogador) {
+                document.getElementById('batalha-status').textContent = '⚔️ Sua vez de atirar!';
+            } else {
+                document.getElementById('batalha-status').textContent = '🤖 Vez da IA...';
+            }
+        }
+
+        function atualizarPlacarBatalha() {
+            document.getElementById('batalha-score-jogador').textContent = placarBatalha.jogador;
+            document.getElementById('batalha-score-ia').textContent = placarBatalha.ia;
+        }
+
+        function atualizarHistoricoBatalha() {
+            const historico = document.getElementById('batalha-historico');
+            historico.innerHTML = '';
+            historicoBatalha.forEach(acao => {
+                const item = document.createElement('div');
+                item.className = 'historia-item';
+                item.textContent = acao;
+                historico.appendChild(item);
+            });
+            historico.scrollTop = historico.scrollHeight;
+        }
+
+        // ===== DOMINÓ =====
+        let dominoPecas = [];
+        let dominoMaoJogador = [];
+        let dominoMaoIA = [];
+        let dominoTabuleiro = [];
+        let jogadorAtualDomino = 'jogador';
+        let jogoAtivoDomino = true;
+        let placarDomino = { jogador: 0, ia: 0 };
+        let historicoDomino = [];
+        let passadasConsecutivas = 0;
+
+        function initDominoGame() {
+            console.log('Inicializando Dominó');
+            inicializarPecasDomino();
+            distribuirPecasDomino();
+            renderizarTabuleiroDomino();
+            renderizarMaoJogador();
+            
+            const botaoNovo = document.getElementById('domino-novo');
+            const botaoComprar = document.getElementById('domino-comprar');
+            const botaoZerar = document.getElementById('domino-zerar');
+
+            if (botaoNovo) botaoNovo.addEventListener('click', novoJogoDomino);
+            if (botaoComprar) botaoComprar.addEventListener('click', comprarPecaDomino);
+            if (botaoZerar) botaoZerar.addEventListener('click', zerarPlacarDomino);
+
+            atualizarStatusDomino();
+            atualizarPlacarDomino();
+        }
+
+        function inicializarPecasDomino() {
+            dominoPecas = [];
+            for (let i = 0; i <= 6; i++) {
+                for (let j = i; j <= 6; j++) {
+                    dominoPecas.push({ esquerda: i, direita: j });
+                }
+            }
+            // Embaralhar
+            for (let i = dominoPecas.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [dominoPecas[i], dominoPecas[j]] = [dominoPecas[j], dominoPecas[i]];
+            }
+        }
+
+        function distribuirPecasDomino() {
+            dominoMaoJogador = dominoPecas.splice(0, 7);
+            dominoMaoIA = dominoPecas.splice(0, 7);
+            dominoTabuleiro = [];
+            passadasConsecutivas = 0;
+        }
+
+        function renderizarTabuleiroDomino() {
+            const tabuleiro = document.getElementById('domino-board');
+            if (!tabuleiro) return;
+
+            tabuleiro.innerHTML = '';
+            
+            if (dominoTabuleiro.length === 0) {
+                tabuleiro.innerHTML = '<p style="text-align: center; color: #666;">Tabuleiro vazio - Faça a primeira jogada!</p>';
+                return;
+            }
+
+            dominoTabuleiro.forEach((peca, index) => {
+                const elemento = document.createElement('div');
+                elemento.className = 'domino-piece';
+                elemento.innerHTML = `
+                    <div class="left">${peca.esquerda}</div>
+                    <div class="right">${peca.direita}</div>
+                `;
+                if (index === 0) elemento.style.border = '2px solid #ff6b6b';
+                if (index === dominoTabuleiro.length - 1) elemento.style.border = '2px solid #4ecdc4';
+                tabuleiro.appendChild(elemento);
+            });
+        }
+
+        function renderizarMaoJogador() {
+            const mao = document.getElementById('domino-hand');
+            if (!mao) return;
+
+            mao.innerHTML = '';
+            
+            dominoMaoJogador.forEach((peca, index) => {
+                const elemento = document.createElement('div');
+                elemento.className = 'domino-piece';
+                elemento.innerHTML = `
+                    <div class="left">${peca.esquerda}</div>
+                    <div class="right">${peca.direita}</div>
+                `;
+                elemento.addEventListener('click', () => jogarPecaDomino(index));
+                mao.appendChild(elemento);
+            });
+        }
+
+        function jogarPecaDomino(index) {
+            if (!jogoAtivoDomino || jogadorAtualDomino !== 'jogador') return;
+
+            const peca = dominoMaoJogador[index];
+            let podeJogar = false;
+            let posicao = 'fim'; // 'inicio' ou 'fim'
+
+            if (dominoTabuleiro.length === 0) {
+                // Primeira jogada
+                podeJogar = true;
+                dominoTabuleiro.push(peca);
+                passadasConsecutivas = 0;
+            } else {
+                // Verificar se pode conectar
+                const primeira = dominoTabuleiro[0];
+                const ultima = dominoTabuleiro[dominoTabuleiro.length - 1];
+                
+                // Verificar se pode jogar no início
+                if (peca.esquerda === primeira.esquerda || peca.direita === primeira.esquerda) {
+                    podeJogar = true;
+                    posicao = 'inicio';
+                    // Inverter peça se necessário
+                    if (peca.direita !== primeira.esquerda) {
+                        [peca.esquerda, peca.direita] = [peca.direita, peca.esquerda];
+                    }
+                }
+                // Verificar se pode jogar no fim
+                else if (peca.esquerda === ultima.direita || peca.direita === ultima.direita) {
+                    podeJogar = true;
+                    posicao = 'fim';
+                    // Inverter peça se necessário
+                    if (peca.esquerda !== ultima.direita) {
+                        [peca.esquerda, peca.direita] = [peca.direita, peca.esquerda];
+                    }
+                }
+            }
+
+            if (podeJogar) {
+                if (posicao === 'inicio') {
+                    dominoTabuleiro.unshift(peca);
+                } else {
+                    dominoTabuleiro.push(peca);
+                }
+                
+                dominoMaoJogador.splice(index, 1);
+                historicoDomino.push(`Jogador jogou ${peca.esquerda}-${peca.direita} no ${posicao === 'inicio' ? 'início' : 'fim'}`);
+                atualizarHistoricoDomino();
+
+                if (dominoMaoJogador.length === 0) {
+                    fimJogoDomino(true);
+                    return;
+                }
+
+                jogadorAtualDomino = 'ia';
+                atualizarStatusDomino();
+                renderizarMaoJogador();
+                renderizarTabuleiroDomino();
+
+                setTimeout(jogarIADomino, 1000);
+            } else {
+                historicoDomino.push('Jogador não pode jogar esta peça');
+                atualizarHistoricoDomino();
+            }
+        }
+
+        function jogarIADomino() {
+            if (!jogoAtivoDomino || jogadorAtualDomino !== 'ia') return;
+
+            let pecaJogada = null;
+            let indexJogada = -1;
+            let posicao = 'fim';
+
+            // Tentar jogar uma peça
+            for (let i = 0; i < dominoMaoIA.length; i++) {
+                const peca = dominoMaoIA[i];
+                let podeJogar = false;
+
+                if (dominoTabuleiro.length === 0) {
+                    podeJogar = true;
+                } else {
+                    const primeira = dominoTabuleiro[0];
+                    const ultima = dominoTabuleiro[dominoTabuleiro.length - 1];
+                    
+                    // Verificar início
+                    if (peca.esquerda === primeira.esquerda || peca.direita === primeira.esquerda) {
+                        podeJogar = true;
+                        posicao = 'inicio';
+                        if (peca.direita !== primeira.esquerda) {
+                            [peca.esquerda, peca.direita] = [peca.direita, peca.esquerda];
+                        }
+                    }
+                    // Verificar fim
+                    else if (peca.esquerda === ultima.direita || peca.direita === ultima.direita) {
+                        podeJogar = true;
+                        posicao = 'fim';
+                        if (peca.esquerda !== ultima.direita) {
+                            [peca.esquerda, peca.direita] = [peca.direita, peca.esquerda];
+                        }
+                    }
+                }
+
+                if (podeJogar) {
+                    pecaJogada = peca;
+                    indexJogada = i;
+                    break;
+                }
+            }
+
+            if (pecaJogada) {
+                if (posicao === 'inicio') {
+                    dominoTabuleiro.unshift(pecaJogada);
+                } else {
+                    dominoTabuleiro.push(pecaJogada);
+                }
+                
+                dominoMaoIA.splice(indexJogada, 1);
+                historicoDomino.push(`IA jogou ${pecaJogada.esquerda}-${pecaJogada.direita} no ${posicao === 'inicio' ? 'início' : 'fim'}`);
+                atualizarHistoricoDomino();
+                passadasConsecutivas = 0;
+
+                if (dominoMaoIA.length === 0) {
+                    fimJogoDomino(false);
+                    return;
+                }
+            } else {
+                // Comprar peça
+                if (dominoPecas.length > 0) {
+                    const novaPeca = dominoPecas.shift();
+                    dominoMaoIA.push(novaPeca);
+                    historicoDomino.push('IA comprou uma peça');
+                    atualizarHistoricoDomino();
+                    passadasConsecutivas++;
+                } else {
+                    passadasConsecutivas++;
+                }
+            }
+
+            // Verificar se o jogo travou
+            if (passadasConsecutivas >= 2) {
+                fimJogoDomino(null); // Empate
+                return;
+            }
+
+            jogadorAtualDomino = 'jogador';
+            atualizarStatusDomino();
+            renderizarTabuleiroDomino();
+        }
+
+        function comprarPecaDomino() {
+            if (!jogoAtivoDomino || jogadorAtualDomino !== 'jogador' || dominoPecas.length === 0) return;
+
+            const novaPeca = dominoPecas.shift();
+            dominoMaoJogador.push(novaPeca);
+            historicoDomino.push('Jogador comprou uma peça');
+            atualizarHistoricoDomino();
+            renderizarMaoJogador();
+            passadasConsecutivas++;
+        }
+
+        function fimJogoDomino(vitoria) {
+            jogoAtivoDomino = false;
+            if (vitoria === true) {
+                placarDomino.jogador++;
+                document.getElementById('domino-status').textContent = '🎉 Você venceu!';
+                incrementGameStats('domino');
+            } else if (vitoria === false) {
+                placarDomino.ia++;
+                document.getElementById('domino-status').textContent = '🤖 IA venceu!';
+            } else {
+                document.getElementById('domino-status').textContent = '🤝 Empate!';
+            }
+            atualizarPlacarDomino();
+        }
+
+        function novoJogoDomino() {
+            inicializarPecasDomino();
+            distribuirPecasDomino();
+            jogadorAtualDomino = 'jogador';
+            jogoAtivoDomino = true;
+            historicoDomino = [];
+            passadasConsecutivas = 0;
+            
+            atualizarStatusDomino();
+            renderizarTabuleiroDomino();
+            renderizarMaoJogador();
+            atualizarHistoricoDomino();
+        }
+
+        function zerarPlacarDomino() {
+            placarDomino = { jogador: 0, ia: 0 };
+            atualizarPlacarDomino();
+        }
+
+        function atualizarStatusDomino() {
+            if (jogadorAtualDomino === 'jogador') {
+                document.getElementById('domino-status').textContent = '🎲 Sua vez de jogar!';
+            } else {
+                document.getElementById('domino-status').textContent = '🤖 Vez da IA...';
+            }
+        }
+
+        function atualizarPlacarDomino() {
+            document.getElementById('domino-score-jogador').textContent = placarDomino.jogador;
+            document.getElementById('domino-score-ia').textContent = placarDomino.ia;
+        }
+
+        function atualizarHistoricoDomino() {
+            const historico = document.getElementById('domino-historico');
+            historico.innerHTML = '';
+            historicoDomino.forEach(acao => {
+                const item = document.createElement('div');
+                item.className = 'historia-item';
+                item.textContent = acao;
+                historico.appendChild(item);
+            });
+            historico.scrollTop = historico.scrollHeight;
+        }
+
+        // 8. Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Dashboard carregado');
+            setupEventListeners();
+            loadGameStats();
+            showGame('dashboard');
+        });
+    </script>
+</body>
+</html>

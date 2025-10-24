@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha - Melhorado</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Jogo da Velha</h1>
+            <div class="game-info">
+                <div id="status">Vez do Jogador X</div>
+                <div class="scoreboard">
+                    <div class="score">
+                        <span class="player" id="playerXName">X</span>
+                        <span id="scoreX">0</span>
+                    </div>
+                    <div class="score">
+                        <span class="player" id="playerOName">O</span>
+                        <span id="scoreO">0</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Seção de Configurações -->
+            <div class="player-settings">
+                <h3>⚙️ Configurações dos Jogadores</h3>
+                <div class="player-names">
+                    <div class="name-input">
+                        <label for="nomeJogadorX">Nome do Jogador X:</label>
+                        <input type="text" id="nomeJogadorX" placeholder="Digite o nome do Jogador X" maxlength="15">
+                    </div>
+                    <div class="name-input">
+                        <label for="nomeJogadorO">Nome do Jogador O:</label>
+                        <input type="text" id="nomeJogadorO" placeholder="Digite o nome do Jogador O" maxlength="15">
+                    </div>
+                </div>
+                <div class="confirm-names">
+                    <button id="confirmarNomes" class="btn-confirm">✅ Confirmar Nomes</button>
+                    <div id="nomesConfirmados" class="nomes-status" style="display: none;">
+                        <span>✅ Nomes confirmados!</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles do Jogo -->
+            <div class="game-controls">
+                <button id="modoJogo" class="btn-secondary">Modo: 2 Jogadores</button>
+                <button id="dificuldade" class="btn-secondary" style="display: none;">Dificuldade: Fácil</button>
+                <button id="zerarPlacar" class="btn-danger">🗑️ Zerar Placar</button>
+            </div>
+
+            <!-- Área Principal do Jogo -->
+            <div class="game-area">
+                <div class="game-board-container">
+                    <div id="tabuleiro">
+                        <div class="celula" data-index="0"></div>
+                        <div class="celula" data-index="1"></div>
+                        <div class="celula" data-index="2"></div>
+                        <div class="celula" data-index="3"></div>
+                        <div class="celula" data-index="4"></div>
+                        <div class="celula" data-index="5"></div>
+                        <div class="celula" data-index="6"></div>
+                        <div class="celula" data-index="7"></div>
+                        <div class="celula" data-index="8"></div>
+                    </div>
+                </div>
+
+                <!-- Ações do Jogo -->
+                <div class="game-actions">
+                    <button id="reiniciar" class="btn-primary">🔄 Reiniciar Jogo</button>
+                    <button id="desfazer" class="btn-secondary">↶ Desfazer</button>
+                </div>
+            </div>
+
+            <!-- Histórico -->
+            <div class="game-history">
+                <h3>📋 Histórico de Jogadas</h3>
+                <div id="historico"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

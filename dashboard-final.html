@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Dashboard de Jogos</title>
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="damas-styles.css">
+    <link rel="stylesheet" href="minado-styles.css">
+    <style>
+        /* Estilos inline para garantir funcionamento */
+        #damas-tabuleiro {
+            display: grid;
+            grid-template-columns: repeat(8, 60px);
+            grid-template-rows: repeat(8, 60px);
+            gap: 2px;
+            background: #333;
+            padding: 8px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: fit-content;
+            margin: 0 auto;
+        }
+        
+        #minado-tabuleiro {
+            display: grid;
+            gap: 2px;
+            background: #333;
+            padding: 8px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: fit-content;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <h1>🎮 Dashboard de Jogos</h1>
+            <p>Escolha seu jogo favorito e divirta-se!</p>
+        </header>
+
+        <!-- Navegação -->
+        <nav class="game-navigation">
+            <button class="nav-btn active" data-game="dashboard">🏠 Dashboard</button>
+            <button class="nav-btn" data-game="velha">⭕ Jogo da Velha</button>
+            <button class="nav-btn" data-game="damas">♟️ Damas</button>
+            <button class="nav-btn" data-game="minado">💣 Campo Minado</button>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <!-- Dashboard Principal -->
+            <div id="dashboard" class="game-section active">
+                <div class="welcome-section">
+                    <h2>🎯 Bem-vindo ao Dashboard de Jogos!</h2>
+                    <p>Escolha um dos jogos disponíveis para começar a diversão:</p>
+                </div>
+
+                <div class="games-grid">
+                    <div class="game-card" data-game="velha">
+                        <div class="game-icon">⭕</div>
+                        <h3>Jogo da Velha</h3>
+                        <p>Clássico jogo de estratégia para 2 jogadores ou vs IA</p>
+                        <div class="game-features">
+                            <span class="feature">🤖 IA Inteligente</span>
+                            <span class="feature">👥 2 Jogadores</span>
+                            <span class="feature">📊 Placar</span>
+                        </div>
+                        <button class="play-btn">Jogar Agora</button>
+                    </div>
+
+                    <div class="game-card" data-game="damas">
+                        <div class="game-icon">♟️</div>
+                        <h3>Damas</h3>
+                        <p>Jogo estratégico com peças que se movem diagonalmente</p>
+                        <div class="game-features">
+                            <span class="feature">👑 Dama</span>
+                            <span class="feature">🎯 Captura</span>
+                            <span class="feature">🏆 Vitória</span>
+                        </div>
+                        <button class="play-btn">Jogar Agora</button>
+                    </div>
+
+                    <div class="game-card" data-game="minado">
+                        <div class="game-icon">💣</div>
+                        <h3>Campo Minado</h3>
+                        <p>Encontre todas as minas sem explodir!</p>
+                        <div class="game-features">
+                            <span class="feature">💣 Minas</span>
+                            <span class="feature">🚩 Bandeiras</span>
+                            <span class="feature">🧠 Lógica</span>
+                        </div>
+                        <button class="play-btn">Jogar Agora</button>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h3>📊 Estatísticas dos Jogos</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">⭕</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Jogo da Velha</span>
+                                <span class="stat-value" id="velha-stats">0 jogos</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">♟️</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Damas</span>
+                                <span class="stat-value" id="damas-stats">0 jogos</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💣</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Campo Minado</span>
+                                <span class="stat-value" id="minado-stats">0 jogos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jogo da Velha -->
+            <div id="velha" class="game-section">
+                <div class="game-header">
+                    <button class="back-btn">← Voltar ao Dashboard</button>
+                    <h2>⭕ Jogo da Velha</h2>
+                </div>
+                <div id="velha-content">
+                    <div class="velha-container">
+                        <div class="game-info">
+                            <div id="status">Vez do Jogador X</div>
+                            <div class="scoreboard">
+                                <div class="score">
+                                    <span class="player" id="playerXName">X</span>
+                                    <span id="scoreX">0</span>
+                                </div>
+                                <div class="score">
+                                    <span class="player" id="playerOName">O</span>
+                                    <span id="scoreO">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="player-settings">
+                            <h3>⚙️ Configurações do Jogo</h3>
+                            <div class="game-mode-info">
+                                <p>🎮 Jogue contra um amigo ou teste suas habilidades contra a IA!</p>
+                            </div>
+                        </div>
+
+                        <div class="game-controls">
+                            <button id="modoJogo" class="btn-secondary">Modo: 2 Jogadores</button>
+                            <button id="dificuldade" class="btn-secondary" style="display: none;">Dificuldade: Fácil</button>
+                            <button id="zerarPlacar" class="btn-danger">🗑️ Zerar Placar</button>
+                        </div>
+
+                        <div class="game-area">
+                            <div class="game-board-container">
+                                <div id="tabuleiro">
+                                    <div class="celula" data-index="0"></div>
+                                    <div class="celula" data-index="1"></div>
+                                    <div class="celula" data-index="2"></div>
+                                    <div class="celula" data-index="3"></div>
+                                    <div class="celula" data-index="4"></div>
+                                    <div class="celula" data-index="5"></div>
+                                    <div class="celula" data-index="6"></div>
+                                    <div class="celula" data-index="7"></div>
+                                    <div class="celula" data-index="8"></div>
+                                </div>
+                            </div>
+
+                            <div class="game-actions">
+                                <button id="reiniciar" class="btn-primary">🔄 Reiniciar Jogo</button>
+                                <button id="desfazer" class="btn-secondary">↶ Desfazer</button>
+                            </div>
+                        </div>
+
+                        <div class="game-history">
+                            <h3>📋 Histórico de Jogadas</h3>
+                            <div id="historico"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Damas -->
+            <div id="damas" class="game-section">
+                <div class="game-header">
+                    <button class="back-btn">← Voltar ao Dashboard</button>
+                    <h2>♟️ Damas</h2>
+                </div>
+                <div id="damas-content">
+                    <div class="damas-container">
+                        <div class="damas-info">
+                            <div id="damas-status">Vez do Jogador Preto</div>
+                            <div class="damas-scoreboard">
+                                <div class="damas-score">
+                                    <span class="player">♟️ Preto</span>
+                                    <span id="damas-score-preto">0</span>
+                                </div>
+                                <div class="damas-score">
+                                    <span class="player">♟️ Branco</span>
+                                    <span id="damas-score-branco">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="damas-controls">
+                            <button id="damas-modo" class="btn-secondary">Modo: 2 Jogadores</button>
+                            <button id="damas-dificuldade" class="btn-secondary" style="display: none;">Dificuldade: Fácil</button>
+                            <button id="damas-reiniciar" class="btn-primary">🔄 Novo Jogo</button>
+                            <button id="damas-zerar" class="btn-danger">🗑️ Zerar Placar</button>
+                            <button onclick="forcarIAJogar()" class="btn-secondary">🧠 Forçar IA</button>
+                        </div>
+
+                        <div class="damas-board-container">
+                            <div id="damas-tabuleiro">
+                                <!-- Tabuleiro 8x8 será gerado dinamicamente -->
+                            </div>
+                        </div>
+
+                        <div class="damas-history">
+                            <h3>📋 Histórico de Movimentos</h3>
+                            <div id="damas-historico"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campo Minado -->
+            <div id="minado" class="game-section">
+                <div class="game-header">
+                    <button class="back-btn">← Voltar ao Dashboard</button>
+                    <h2>💣 Campo Minado</h2>
+                </div>
+                <div id="minado-content">
+                    <div class="minado-container">
+                        <div class="minado-info">
+                            <div id="minado-status">💣 Campo Minado - Clique para começar!</div>
+                            <div class="minado-scoreboard">
+                                <div class="minado-score">
+                                    <span class="player">🎮 Jogos</span>
+                                    <span id="minado-jogos">0</span>
+                                </div>
+                                <div class="minado-score">
+                                    <span class="player">🏆 Vitórias</span>
+                                    <span id="minado-vitorias">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="minado-stats">
+                            <div class="minado-stat">
+                                <span>🚩 Bandeiras:</span>
+                                <span id="bandeiras-restantes">10</span>
+                            </div>
+                            <div class="minado-stat">
+                                <span>⏱️ Tempo:</span>
+                                <span id="tempo">00:00</span>
+                            </div>
+                        </div>
+
+                        <div class="minado-controls">
+                            <button id="minado-novo" class="btn-primary">🆕 Novo Jogo</button>
+                            <button id="minado-dificuldade" class="btn-secondary">Dificuldade: Fácil</button>
+                            <button id="minado-zerar" class="btn-danger">🗑️ Zerar Estatísticas</button>
+                        </div>
+
+                        <div class="minado-board-container">
+                            <div id="minado-tabuleiro">
+                                <!-- Tabuleiro será gerado dinamicamente -->
+                            </div>
+                        </div>
+
+                        <div class="minado-history">
+                            <h3>📋 Histórico de Jogos</h3>
+                            <div id="minado-historico"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>🎮 Dashboard de Jogos - Desenvolvido com ❤️</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="damas-game.js"></script>
+    <script src="damas-ia-fix.js"></script>
+    <script src="minado-game.js"></script>
+    <script>
+        // ===== DASHBOARD DE JOGOS - SISTEMA PRINCIPAL =====
+
+        // 1. Variáveis Globais
+        let currentGame = 'dashboard';
+        let gameStats = {
+            velha: 0,
+            damas: 0,
+            minado: 0
+        };
+
+        // 2. Referências do DOM
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const gameSections = document.querySelectorAll('.game-section');
+        const gameCards = document.querySelectorAll('.game-card');
+        const backButtons = document.querySelectorAll('.back-btn');
+        const statsElements = {
+            velha: document.getElementById('velha-stats'),
+            damas: document.getElementById('damas-stats'),
+            minado: document.getElementById('minado-stats')
+        };
+
+        // 3. Sistema de Navegação
+        function showGame(gameId) {
+            // Esconde todas as seções
+            gameSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active de todos os botões de navegação
+            navButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Mostra a seção selecionada
+            const targetSection = document.getElementById(gameId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            // Ativa o botão correspondente
+            const targetBtn = document.querySelector(`[data-game="${gameId}"]`);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+            
+            currentGame = gameId;
+            
+            // Inicializa jogos específicos
+            setTimeout(() => {
+                if (gameId === 'damas' && typeof initDamasGame === 'function') {
+                    console.log('Inicializando Damas...');
+                    initDamasGame();
+                } else if (gameId === 'minado' && typeof initMinadoGame === 'function') {
+                    console.log('Inicializando Campo Minado...');
+                    initMinadoGame();
+                } else if (gameId === 'velha' && typeof inicializarNomes === 'function') {
+                    console.log('Inicializando Jogo da Velha...');
+                    inicializarNomes();
+                }
+            }, 200);
+        }
+
+        // 4. Atualização de Estatísticas
+        function updateStats() {
+            if (statsElements.velha) statsElements.velha.textContent = `${gameStats.velha} jogos`;
+            if (statsElements.damas) statsElements.damas.textContent = `${gameStats.damas} jogos`;
+            if (statsElements.minado) statsElements.minado.textContent = `${gameStats.minado} jogos`;
+        }
+
+        // 5. Incrementar Estatísticas
+        function incrementGameStats(gameType) {
+            if (gameStats.hasOwnProperty(gameType)) {
+                gameStats[gameType]++;
+                updateStats();
+                localStorage.setItem('gameStats', JSON.stringify(gameStats));
+            }
+        }
+
+        // 6. Carregar Estatísticas do localStorage
+        function loadGameStats() {
+            const savedStats = localStorage.getItem('gameStats');
+            if (savedStats) {
+                gameStats = JSON.parse(savedStats);
+                updateStats();
+            }
+        }
+
+        // 7. Event Listeners
+        function setupEventListeners() {
+            // Navegação principal
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const gameId = btn.getAttribute('data-game');
+                    showGame(gameId);
+                });
+            });
+
+            // Cards de jogos no dashboard
+            gameCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const gameId = card.getAttribute('data-game');
+                    showGame(gameId);
+                });
+            });
+
+            // Botões de voltar
+            backButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    showGame('dashboard');
+                });
+            });
+        }
+
+        // 8. Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Dashboard carregado');
+            setupEventListeners();
+            loadGameStats();
+            showGame('dashboard');
+        });
+    </script>
+</body>
+</html>

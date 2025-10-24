@@ -1,0 +1,388 @@
+/* ===== ESTILOS DO CAMPO MINADO ===== */
+
+/* Container do Campo Minado */
+.minado-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Informações do Jogo */
+.minado-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.minado-scoreboard {
+    display: flex;
+    gap: 20px;
+}
+
+.minado-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 15px;
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.minado-score .player {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.minado-score span:last-child {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+}
+
+#minado-status {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.minado-stats {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.minado-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 12px;
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 80px;
+}
+
+.minado-stat span:first-child {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 2px;
+}
+
+.minado-stat span:last-child {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Controles */
+.minado-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+/* Container do Tabuleiro */
+.minado-board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+/* Tabuleiro do Campo Minado */
+#minado-tabuleiro {
+    display: grid;
+    gap: 2px;
+    background: #333;
+    padding: 8px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: fit-content;
+    margin: 0 auto;
+}
+
+/* Casas do Campo Minado */
+.casa-minado {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border: 2px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: bold;
+    font-size: 0.9rem;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.casa-minado::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.3s;
+}
+
+.casa-minado:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.casa-minado:hover::before {
+    left: 100%;
+}
+
+.casa-minado:active {
+    transform: scale(0.95);
+}
+
+/* Casa Revelada */
+.casa-minado.revelada {
+    background: linear-gradient(145deg, #e9ecef, #dee2e6);
+    border-color: #adb5bd;
+    cursor: default;
+}
+
+.casa-minado.revelada:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Números */
+.casa-minado.numero-1 { color: #0066cc; }
+.casa-minado.numero-2 { color: #009900; }
+.casa-minado.numero-3 { color: #cc0000; }
+.casa-minado.numero-4 { color: #660099; }
+.casa-minado.numero-5 { color: #cc6600; }
+.casa-minado.numero-6 { color: #0099cc; }
+.casa-minado.numero-7 { color: #000000; }
+.casa-minado.numero-8 { color: #666666; }
+
+/* Mina */
+.casa-minado.mina {
+    background: linear-gradient(145deg, #ff6b6b, #ee5a24);
+    color: white;
+    animation: explode 0.5s ease-in-out;
+}
+
+@keyframes explode {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+/* Bandeira */
+.casa-minado.bandeira {
+    background: linear-gradient(145deg, #ffd700, #ffed4e);
+    color: #cc6600;
+    animation: flagWave 1s ease-in-out infinite alternate;
+}
+
+@keyframes flagWave {
+    0% { transform: rotate(-2deg); }
+    100% { transform: rotate(2deg); }
+}
+
+/* Histórico */
+.minado-history {
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.minado-history h3 {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+#minado-historico {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.historia-item {
+    padding: 8px 12px;
+    margin: 5px 0;
+    background: linear-gradient(45deg, #ffffff, #f8f9fa);
+    border-radius: 8px;
+    border-left: 4px solid #4ecdc4;
+    font-size: 0.9rem;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .minado-container {
+        padding: 15px;
+    }
+    
+    .minado-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .minado-stats {
+        justify-content: center;
+    }
+    
+    .casa-minado {
+        width: 25px;
+        height: 25px;
+        font-size: 0.8rem;
+    }
+    
+    .minado-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .minado-container {
+        padding: 10px;
+    }
+    
+    .casa-minado {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+    }
+    
+    .minado-stats {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .minado-stat {
+        min-width: 60px;
+        padding: 6px 8px;
+    }
+    
+    .minado-stat span:first-child {
+        font-size: 0.7rem;
+    }
+    
+    .minado-stat span:last-child {
+        font-size: 1rem;
+    }
+}
+
+/* Dificuldades Específicas */
+/* Fácil - 9x9 */
+#minado-tabuleiro[style*="repeat(9, 1fr)"] .casa-minado {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+}
+
+/* Médio - 16x16 */
+#minado-tabuleiro[style*="repeat(16, 1fr)"] .casa-minado {
+    width: 25px;
+    height: 25px;
+    font-size: 0.8rem;
+}
+
+/* Difícil - 16x30 */
+#minado-tabuleiro[style*="repeat(30, 1fr)"] .casa-minado {
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+}
+
+/* Animações Especiais */
+.casa-minado.revelada {
+    animation: reveal 0.3s ease-out;
+}
+
+@keyframes reveal {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Efeito de Explosão para Minas */
+.casa-minado.mina {
+    animation: mineExplode 0.6s ease-in-out;
+}
+
+@keyframes mineExplode {
+    0% {
+        transform: scale(1);
+        background: linear-gradient(145deg, #ff6b6b, #ee5a24);
+    }
+    25% {
+        transform: scale(1.2);
+        background: linear-gradient(145deg, #ff0000, #cc0000);
+    }
+    50% {
+        transform: scale(1.4);
+        background: linear-gradient(145deg, #ff6600, #ff3300);
+    }
+    75% {
+        transform: scale(1.2);
+        background: linear-gradient(145deg, #ff9900, #ff6600);
+    }
+    100% {
+        transform: scale(1);
+        background: linear-gradient(145deg, #ff6b6b, #ee5a24);
+    }
+}
+
+/* Efeito de Vitória */
+.vitoria .casa-minado.revelada {
+    animation: victory 0.5s ease-in-out;
+}
+
+@keyframes victory {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}

@@ -1,0 +1,355 @@
+/* ===== ESTILOS DO JOGO DE DAMAS ===== */
+
+/* Container do Jogo de Damas */
+.damas-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Informações do Jogo */
+.damas-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+#damas-status {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.damas-scoreboard {
+    display: flex;
+    gap: 20px;
+}
+
+.damas-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 15px;
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.damas-score .player {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.damas-score span:last-child {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Controles */
+.damas-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+/* Container do Tabuleiro */
+.damas-board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Tabuleiro de Damas */
+#damas-tabuleiro {
+    display: grid;
+    grid-template-columns: repeat(8, 60px);
+    grid-template-rows: repeat(8, 60px);
+    gap: 2px;
+    background: #333;
+    padding: 8px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: fit-content;
+    margin: 0 auto;
+}
+
+/* Casas do Tabuleiro */
+.casa-damas {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    border-radius: 5px;
+}
+
+.casa-branca {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+}
+
+.casa-preta {
+    background: linear-gradient(145deg, #8b4513, #654321);
+}
+
+.casa-damas:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Movimentos Possíveis */
+.casa-damas.movimento-possivel {
+    background: linear-gradient(45deg, #4ecdc4, #44a08d) !important;
+    animation: pulse 1s infinite alternate;
+    cursor: pointer;
+}
+
+.casa-damas.movimento-possivel::after {
+    content: '●';
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Peça Selecionada */
+.casa-damas.peca-selecionada {
+    background: linear-gradient(45deg, #ffd700, #ffed4e) !important;
+    animation: winPulse 1s ease-in-out infinite alternate;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+}
+
+/* Peças */
+.peca-damas {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.peca-damas::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.peca-damas:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.peca-damas:hover::before {
+    left: 100%;
+}
+
+/* Peças Pretas */
+.peca-damas.preto {
+    background: linear-gradient(145deg, #2c3e50, #34495e);
+    color: white;
+    border: 3px solid #1a252f;
+}
+
+.peca-damas.preto:hover {
+    background: linear-gradient(145deg, #34495e, #2c3e50);
+}
+
+/* Peças Brancas */
+.peca-damas.branco {
+    background: linear-gradient(145deg, #ecf0f1, #bdc3c7);
+    color: #2c3e50;
+    border: 3px solid #95a5a6;
+}
+
+.peca-damas.branco:hover {
+    background: linear-gradient(145deg, #bdc3c7, #ecf0f1);
+}
+
+/* Damas */
+.peca-damas.dama {
+    border: 4px solid #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    animation: damaGlow 2s ease-in-out infinite alternate;
+}
+
+.peca-damas.dama.preto {
+    background: linear-gradient(145deg, #8e44ad, #9b59b6);
+    color: #ffd700;
+}
+
+.peca-damas.dama.branco {
+    background: linear-gradient(145deg, #f39c12, #e67e22);
+    color: white;
+}
+
+/* Histórico */
+.damas-history {
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.damas-history h3 {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+#damas-historico {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.historia-item {
+    padding: 8px 12px;
+    margin: 5px 0;
+    background: linear-gradient(45deg, #ffffff, #f8f9fa);
+    border-radius: 8px;
+    border-left: 4px solid #4ecdc4;
+    font-size: 0.9rem;
+    animation: slideIn 0.3s ease;
+}
+
+/* Animações */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+@keyframes winPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 0 20px rgba(255, 215, 0, 0);
+    }
+}
+
+@keyframes damaGlow {
+    0% {
+        box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .damas-container {
+        padding: 15px;
+    }
+    
+    .damas-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    #damas-tabuleiro {
+        grid-template-columns: repeat(8, 45px);
+        grid-template-rows: repeat(8, 45px);
+    }
+    
+    .casa-damas {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .peca-damas {
+        width: 35px;
+        height: 35px;
+        font-size: 1.5rem;
+    }
+    
+    .damas-scoreboard {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .damas-container {
+        padding: 10px;
+    }
+    
+    #damas-tabuleiro {
+        grid-template-columns: repeat(8, 35px);
+        grid-template-rows: repeat(8, 35px);
+        gap: 1px;
+        padding: 4px;
+    }
+    
+    .casa-damas {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .peca-damas {
+        width: 28px;
+        height: 28px;
+        font-size: 1.2rem;
+    }
+    
+    .damas-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .damas-scoreboard {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

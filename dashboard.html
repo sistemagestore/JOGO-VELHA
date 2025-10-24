@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Dashboard de Jogos</title>
+    <link rel="stylesheet" href="dashboard-styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <h1>🎮 Dashboard de Jogos</h1>
+            <p>Escolha seu jogo favorito e divirta-se!</p>
+        </header>
+
+        <!-- Navegação -->
+        <nav class="game-navigation">
+            <button class="nav-btn active" data-game="dashboard">🏠 Dashboard</button>
+            <button class="nav-btn" data-game="velha">⭕ Jogo da Velha</button>
+            <button class="nav-btn" data-game="damas">♟️ Damas</button>
+            <button class="nav-btn" data-game="minado">💣 Campo Minado</button>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <!-- Dashboard Principal -->
+            <div id="dashboard" class="game-section active">
+                <div class="welcome-section">
+                    <h2>🎯 Bem-vindo ao Dashboard de Jogos!</h2>
+                    <p>Escolha um dos jogos disponíveis para começar a diversão:</p>
+                </div>
+
+                <div class="games-grid">
+                    <div class="game-card" data-game="velha">
+                        <div class="game-icon">⭕</div>
+                        <h3>Jogo da Velha</h3>
+                        <p>Clássico jogo de estratégia para 2 jogadores ou vs IA</p>
+                        <div class="game-features">
+                            <span class="feature">🤖 IA Inteligente</span>
+                            <span class="feature">👥 2 Jogadores</span>
+                            <span class="feature">📊 Placar</span>
+                        </div>
+                        <button class="play-btn">Jogar Agora</button>
+                    </div>
+
+                    <div class="game-card" data-game="damas">
+                        <div class="game-icon">♟️</div>
+                        <h3>Damas</h3>
+                        <p>Jogo estratégico com peças que se movem diagonalmente</p>
+                        <div class="game-features">
+                            <span class="feature">👑 Dama</span>
+                            <span class="feature">🎯 Captura</span>
+                            <span class="feature">🏆 Vitória</span>
+                        </div>
+                        <button class="play-btn">Jogar Agora</button>
+                    </div>
+
+                    <div class="game-card" data-game="minado">
+                        <div class="game-icon">💣</div>
+                        <h3>Campo Minado</h3>
+                        <p>Encontre todas as minas sem explodir!</p>
+                        <div class="game-features">
+                            <span class="feature">💣 Minas</span>
+                            <span class="feature">🚩 Bandeiras</span>
+                            <span class="feature">🧠 Lógica</span>
+                        </div>
+                        <button class="play-btn">Jogar Agora</button>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h3>📊 Estatísticas dos Jogos</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">⭕</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Jogo da Velha</span>
+                                <span class="stat-value" id="velha-stats">0 jogos</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">♟️</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Damas</span>
+                                <span class="stat-value" id="damas-stats">0 jogos</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💣</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Campo Minado</span>
+                                <span class="stat-value" id="minado-stats">0 jogos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jogo da Velha -->
+            <div id="velha" class="game-section">
+                <div class="game-header">
+                    <button class="back-btn">← Voltar ao Dashboard</button>
+                    <h2>⭕ Jogo da Velha</h2>
+                </div>
+                <div id="velha-content">
+                    <!-- Conteúdo do Jogo da Velha será carregado aqui -->
+                </div>
+            </div>
+
+            <!-- Damas -->
+            <div id="damas" class="game-section">
+                <div class="game-header">
+                    <button class="back-btn">← Voltar ao Dashboard</button>
+                    <h2>♟️ Damas</h2>
+                </div>
+                <div id="damas-content">
+                    <!-- Conteúdo do Jogo de Damas será carregado aqui -->
+                </div>
+            </div>
+
+            <!-- Campo Minado -->
+            <div id="minado" class="game-section">
+                <div class="game-header">
+                    <button class="back-btn">← Voltar ao Dashboard</button>
+                    <h2>💣 Campo Minado</h2>
+                </div>
+                <div id="minado-content">
+                    <!-- Conteúdo do Campo Minado será carregado aqui -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>🎮 Dashboard de Jogos - Desenvolvido com ❤️</p>
+        </footer>
+    </div>
+
+    <script src="dashboard-script.js"></script>
+</body>
+</html>
